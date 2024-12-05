@@ -1,14 +1,14 @@
 //
-//  LocationManager.swift
-//  FlorianWeather
+//  LocationManagerService.swift
+//  GroceryStoreApp
 //
-//  Created by Flrorian Kasperbauer on 2024-11-13.
+//  Created by Flrorian Kasperbauer on 2024-12-05.
 //
 
-import CoreLocation
 import Combine
+import CoreLocation
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+class LocationService: NSObject, CLLocationManagerDelegate {
     // Properties
     private let locationManager = CLLocationManager()
     @Published var currentLocation: CLLocation?
@@ -21,6 +21,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
     
 // Set Up
     private func setupLocationManager() {
+        
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
@@ -39,6 +40,15 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
 // Delegate CLLocationManagerDelegate error
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Location error: \(error.localizedDescription)")
+    }
+    
+    
+    func startUpdatingLocation() {
+        locationManager.startUpdatingLocation()
+    }
+    
+    func stopUpdatingLocation() {
+        locationManager.stopUpdatingLocation()
     }
     
 }
