@@ -5,9 +5,6 @@
 //  Created by Flrorian Kasperbauer on 2024-12-05.
 //
 
-
-//Can you see this
-// i want to eat
 struct StoreListView : View {
     @StateObject private var viewModel = StoreListViewModel()
     
@@ -15,7 +12,4 @@ struct StoreListView : View {
         EmptyView()
     }
     
-    
 }
-
-
