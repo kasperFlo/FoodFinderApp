@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import GooglePlaces
 
 @main
 struct ResturantApp: App {
+    
+    init() {
+        GMSPlacesClient.provideAPIKey(Secret)
+    }
+    
     var body: some Scene {
         WindowGroup {
-//            SplashView()
             StoreListView()
         }
     }
+    
 }
-
 
