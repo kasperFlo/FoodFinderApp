@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		175594C02D0287E000A9B148 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 175594BF2D0287E000A9B148 /* GooglePlaces */; };
+		175594C22D0287E000A9B148 /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 175594C12D0287E000A9B148 /* GooglePlacesSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		17DCC4952CB8B605006D4FCA /* GroceryStoreApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryStoreApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				175594C02D0287E000A9B148 /* GooglePlaces in Frameworks */,
+				175594C22D0287E000A9B148 /* GooglePlacesSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +72,8 @@
 			);
 			name = GroceryStoreApp;
 			packageProductDependencies = (
+				175594BF2D0287E000A9B148 /* GooglePlaces */,
+				175594C12D0287E000A9B148 /* GooglePlacesSwift */,
 			);
 			productName = GroceryStoreApp;
 			productReference = 17DCC4952CB8B605006D4FCA /* GroceryStoreApp.app */;
@@ -94,6 +103,9 @@
 			);
 			mainGroup = 17DCC48C2CB8B605006D4FCA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17DCC4962CB8B605006D4FCA /* Products */;
 			projectDirPath = "";
@@ -330,6 +342,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		175594BF2D0287E000A9B148 /* GooglePlaces */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlaces;
+		};
+		175594C12D0287E000A9B148 /* GooglePlacesSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
+			productName = GooglePlacesSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 17DCC48D2CB8B605006D4FCA /* Project object */;
 }

@@ -11,8 +11,8 @@ import SwiftUI
 struct ResturantApp: App {
     var body: some Scene {
         WindowGroup {
-            SplashView()
-            //StoreListView()
+//            SplashView()
+            StoreListView()
         }
     }
 }

@@ -25,8 +25,9 @@ class LocationService: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
-        locationManager.distanceFilter = 1000
+        
         // maybe add details if denied permissions
+        locationManager.distanceFilter = 1000
         locationManager.startUpdatingLocation()
     }
     
