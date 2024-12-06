@@ -4,67 +4,94 @@
 //
 //  Created by Suthakaran Siva on 2024-12-05.
 //
-
 import SwiftUI
+import GooglePlaces
 
-
-struct HomeView: View {
-    @State private var searchText = ""
-    @State private var selectedRadius: Double = 5
-    let radiusOptions = [1, 2, 5, 10, 20]
+struct StoreListContent: View {
+    let stores: [GMSPlace]
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    
-                    VStack(spacing: 12) {
-                        TextField("Search restaurants...", text: $searchText)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                        
-                     
-                        HStack {
-                            Image(systemName: "location.circle.fill")
-                                .foregroundColor(.green)
-                            
-                            Picker("Radius", selection: $selectedRadius) {
-                                ForEach(radiusOptions, id: \.self) { radius in
-                                    Text("\(radius) km").tag(Double(radius))
-                                }
-                            }
-                            .pickerStyle(SegmentedPickerStyle())
-                        }
-                    }
-                    .padding(.horizontal)
-                    
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 15) {
-                            ForEach(["All", "Fast Food", "Italian", "Asian", "Mexican"], id: \.self) { category in
-                                Text(category)
-                                    .padding(.horizontal, 20)
-                                    .padding(.vertical, 10)
-                                    .background(Color.green.opacity(0.1))
-                                    .cornerRadius(20)
-                            }
-                        }
-                        .padding(.horizontal)
-                    }
-                    
-                    // Restaurant List
-                    VStack(spacing: 15) {
-                        ForEach(0..<5) { _ in
-                            RestaurantCard()
-                        }
-                    }
-                    .padding(.horizontal)
+        ScrollView {
+            LazyVStack(spacing: 16) {
+                ForEach(stores, id: \.self) { store in
+                    EnhancedRestaurantCard(store: store)
                 }
             }
-            .navigationTitle("Restaurants")
+            .padding()
         }
     }
 }
 
-#Preview {
-    HomeView()
+struct EnhancedRestaurantCard: View {
+    let store: GMSPlace
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            
+            if let iconURL = store.iconImageURL {
+                AsyncImage(url: iconURL) { image in
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(height: 100)
+                        .cornerRadius(10)
+                } placeholder: {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.2))
+                        .frame(height: 100)
+                        .cornerRadius(10)
+                }
+            } else {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.2))
+                    .frame(height: 200)
+                    .cornerRadius(10)
+            }
+            
+            Text(store.name ?? "Unknown Store")
+                .font(.title3)
+                .fontWeight(.bold)
+            
+            if let address = store.formattedAddress {
+                Text(address)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
+            
+            HStack {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+                Text(String(format: "%.1f", store.rating))
+                
+                Text("•")
+                
+                if store.priceLevel.rawValue > 0 {
+                    Text(String(repeating: "$", count: Int(store.priceLevel.rawValue)))
+                        .foregroundColor(.green)
+                }
+                
+                if let phoneNumber = store.phoneNumber {
+                    Text("•")
+                    HStack {
+                        Image(systemName: "phone.fill")
+                        Text(phoneNumber)
+                    }
+                    .foregroundColor(.blue)
+                }
+            }
+            .font(.subheadline)
+            .foregroundColor(.gray)
+            
+            if let website = store.website {
+                Text(website.absoluteString)
+                    .font(.caption)
+                    .foregroundColor(.blue)
+                    .lineLimit(1)
+            }
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(15)
+        .shadow(radius: 2)
+    }
 }

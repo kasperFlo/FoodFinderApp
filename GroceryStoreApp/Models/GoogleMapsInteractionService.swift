@@ -36,6 +36,7 @@ public class GoogleMapsInteractionService {
                 GMSPlaceProperty.formattedAddress,
                 GMSPlaceProperty.website,
                 GMSPlaceProperty.photos,
+                GMSPlaceProperty.iconImageURL,
                 GMSPlaceProperty.phoneNumber
             ].map { $0.rawValue }
             
@@ -69,7 +70,7 @@ public class GoogleMapsInteractionService {
 
                 print("Successfully fetched \(results.count) nearby stores")
                 results.forEach { place in
-                    if let name = place.name {
+                    if let name = place.photos {
                         print("Restaurant name: \(name)")
                     } else {
                         print("Restaurant with unnamed location")

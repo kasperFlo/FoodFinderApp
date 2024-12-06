@@ -17,7 +17,7 @@ struct ResturantApp: App {
     
     var body: some Scene {
         WindowGroup {
-            StoreListView()
+            MainTabView()
         }
     }
     

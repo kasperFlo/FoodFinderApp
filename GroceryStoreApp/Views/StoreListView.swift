@@ -3,11 +3,11 @@
 //  GroceryStoreApp
 //
 //  Created by Flrorian Kasperbauer on 2024-12-05.
-//
+
 import SwiftUI
 import GooglePlaces
 
-struct StoreListView: View {
+struct HomeView: View {
     @StateObject private var viewModel = StoreListViewModel()
     
     var body: some View {
@@ -47,55 +47,55 @@ struct LocationView: View {
     }
 }
 
-struct StoreListContent: View {
-    let stores: [GMSPlace]
-    
-    var body: some View {
-        List(stores, id: \.self) { store in
-            VStack(alignment: .leading, spacing: 8) {
-                Text(store.name ?? "Unknown Store")
-                    .font(.headline)
-                    .foregroundColor(.primary)
-                
-                if let address = store.formattedAddress {
-                    Text(address)
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                }
-                            
-                HStack {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(.yellow)
-                    Text(String(format: "%.1f", store.rating))
-                        .font(.subheadline)
-                }
-            
-            
-//                Text(String(repeating: "$", count: (store.priceLevel).rawValue ))
-//                    .font(.caption)
-//                    .foregroundColor(.green)
-                
-                
-                if let phoneNumber = store.phoneNumber {
-                    HStack {
-                        Image(systemName: "phone.fill")
-                        Text(phoneNumber)
-                            .font(.caption)
-                    }
-                    .foregroundColor(.blue)
-                }
-                
-                if let website = store.website {
-                    Text(website.absoluteString)
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                        .lineLimit(1)
-                }
-            }
-            .padding(.vertical, 4)
-        }
-    }
-}
+//struct StoreListContent: View {
+//    let stores: [GMSPlace]
+//
+//    var body: some View {
+//        List(stores, id: \.self) { store in
+//            VStack(alignment: .leading, spacing: 8) {
+//                Text(store.name ?? "Unknown Store")
+//                    .font(.headline)
+//                    .foregroundColor(.primary)
+//                
+//                if let address = store.formattedAddress {
+//                    Text(address)
+//                        .font(.subheadline)
+//                        .foregroundColor(.secondary)
+//                }
+//                            
+//                HStack {
+//                    Image(systemName: "star.fill")
+//                        .foregroundColor(.yellow)
+//                    Text(String(format: "%.1f", store.rating))
+//                        .font(.subheadline)
+//                }
+//            
+//            
+////                Text(String(repeating: "$", count: (store.priceLevel).rawValue ))
+////                    .font(.caption)
+////                    .foregroundColor(.green)
+//                
+//                
+//                if let phoneNumber = store.phoneNumber {
+//                    HStack {
+//                        Image(systemName: "phone.fill")
+//                        Text(phoneNumber)
+//                            .font(.caption)
+//                    }
+//                    .foregroundColor(.blue)
+//                }
+//                
+//                if let website = store.website {
+//                    Text(website.absoluteString)
+//                        .font(.caption)
+//                        .foregroundColor(.blue)
+//                        .lineLimit(1)
+//                }
+//            }
+//            .padding(.vertical, 4)
+//        }
+//    }
+//}
 
 struct ErrorView: View {
     let error: Error
