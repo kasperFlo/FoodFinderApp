@@ -7,14 +7,17 @@
 import SwiftUI
 import GooglePlaces
 
-struct StoreListContent: View {
+struct StoreListView: View {
     let stores: [GMSPlace]
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 16) {
+            VStack(spacing: 16) {
                 ForEach(stores, id: \.self) { store in
-                    EnhancedRestaurantCard(store: store)
+                    NavigationLink (destination : RestaurantDetailView(store: store)) {
+                        EnhancedRestaurantCard(store: store)
+                            .foregroundColor(.primary) // Prevents the default blue tint
+                    }
                 }
             }
             .padding()
@@ -94,4 +97,5 @@ struct EnhancedRestaurantCard: View {
         .cornerRadius(15)
         .shadow(radius: 2)
     }
+    
 }
