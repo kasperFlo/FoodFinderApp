@@ -73,13 +73,21 @@ public class GoogleMapsInteractionService {
                 }
 
                 print("Successfully fetched \(results.count) nearby stores")
+                
+                // testing given data
+                
                 results.forEach { place in
-                    if let name = place.photos {
-                        print("Restaurant name: \(name)")
+                    if let photos = place.photos {
+                        photos.forEach { photoMetadata in
+                            if let attributions = photoMetadata.attributions {
+                                print("Photo attributions: \(attributions)")
+                            }
+                        }
                     } else {
-                        print("Restaurant with unnamed location")
+                        print("No photos available for this place")
                     }
                 }
+                
                 self.placeResults = results
                 continuation.resume(returning: results)
             }
