@@ -26,6 +26,13 @@ struct MainTabView: View {
                     }
             }
             .accentColor(.green)
+            .onAppear {
+                            // Set background color for tab bar
+                            let appearance = UITabBarAppearance()
+                            appearance.backgroundColor = .white
+                            UITabBar.appearance().scrollEdgeAppearance = appearance
+                            UITabBar.appearance().standardAppearance = appearance
+                        }
         }
     }
 }
