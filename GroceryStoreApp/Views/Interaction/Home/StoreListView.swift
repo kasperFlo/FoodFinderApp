@@ -10,8 +10,8 @@ import GooglePlaces
 struct StoreListView: View {
     let stores: [GMSPlace]
     @StateObject private var locationService = LocationService()
+    
     @State private var selectedDistance: Double = 5
-    @EnvironmentObject var favoritesManager: FavoritesManager
     
     var filteredStores: [GMSPlace] {
         stores.filter { store -> Bool in
@@ -24,26 +24,10 @@ struct StoreListView: View {
             return false
         }
     }
+    
     var body: some View {
         VStack {
-            
-//            if let location = locationService.currentLocation {
-//                Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-//            }
-            
-            // to check the distance from user to store
-            
-//            var body: some View {
-//                VStack {
-//                    if let location = locationService.currentLocation {
-//                        Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-//                        ForEach(stores, id: \.self) { store in
-//                            let distance = location.distance(from: CLLocation(latitude: store.coordinate.latitude, longitude: store.coordinate.longitude)) / 1000
-//                            Text("Store: \(store.name ?? "Unknown") - Distance: \(String(format: "%.2f", distance))km")
-//                        }
-//                    }
-                    
-            
+
             HStack {
                 Text("Distance:")
                 Picker("Distance", selection: $selectedDistance) {
@@ -60,7 +44,7 @@ struct StoreListView: View {
                 VStack(spacing: 16) {
                     ForEach(filteredStores, id: \.self) { store in
                         NavigationLink(destination: RestaurantDetailView(store: store)) {
-                            EnhancedRestaurantCard(store: store)
+                            RestaurantCard(store: store)
                                 .foregroundColor(.primary)
                         }
                     }
@@ -88,19 +72,20 @@ class LocationManager: NSObject, ObservableObject {
     }
 }
 
-class FavoritesManager: ObservableObject {
-    @Published var favorites: [GMSPlace] = []
-    
-    func toggleFavorite(_ store: GMSPlace) {
-        if favorites.contains(store) {
-            favorites.removeAll { $0 == store }
-        } else {
-            favorites.append(store)
-        }
-    }
-    
-    func isFavorite(_ store: GMSPlace) -> Bool {
-        favorites.contains(store)
-    }
-}
 
+
+//            if let location = locationService.currentLocation {
+//                Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+//            }
+            
+            // to check the distance from user to store
+            
+//            var body: some View {
+//                VStack {
+//                    if let location = locationService.currentLocation {
+//                        Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+//                        ForEach(stores, id: \.self) { store in
+//                            let distance = location.distance(from: CLLocation(latitude: store.coordinate.latitude, longitude: store.coordinate.longitude)) / 1000
+//                            Text("Store: \(store.name ?? "Unknown") - Distance: \(String(format: "%.2f", distance))km")
+//                        }
+//                    }

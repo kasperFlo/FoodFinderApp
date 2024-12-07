@@ -11,8 +11,6 @@ import GooglePlaces
 @main
 struct ResturantApp: App {
     
-    @StateObject var favoritesManager = FavoritesManager()
-
     init() {
         GMSPlacesClient.provideAPIKey(Secret)
     }
@@ -20,7 +18,6 @@ struct ResturantApp: App {
     var body: some Scene {
         WindowGroup {
             MainTabView()
-                .environmentObject(favoritesManager)
         }
     }
     

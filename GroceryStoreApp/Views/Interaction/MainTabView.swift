@@ -8,31 +8,28 @@
 import SwiftUI
 
 struct MainTabView: View {
-    @StateObject var favoritesManager = FavoritesManager()
-    
+
     var body: some View {
         NavigationView {
             TabView {
                 HomeBody()
-                    .environmentObject(favoritesManager)
                     .tabItem {
                         Label("Home", systemImage: "house.fill")
                     }
                 
                 FavoritesView()
-                    .environmentObject(favoritesManager)
                     .tabItem {
                         Label("Favorites", systemImage: "heart.fill")
                     }
             }
             .accentColor(.green)
             .onAppear {
-                            // Set background color for tab bar
-                            let appearance = UITabBarAppearance()
-                            appearance.backgroundColor = .white
-                            UITabBar.appearance().scrollEdgeAppearance = appearance
-                            UITabBar.appearance().standardAppearance = appearance
-                        }
+                // Set background color for tab bar
+                let appearance = UITabBarAppearance()
+                appearance.backgroundColor = .white
+                UITabBar.appearance().scrollEdgeAppearance = appearance
+                UITabBar.appearance().standardAppearance = appearance
+            }
         }
     }
 }

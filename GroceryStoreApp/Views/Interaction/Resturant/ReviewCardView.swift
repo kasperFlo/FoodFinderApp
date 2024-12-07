@@ -14,7 +14,6 @@ struct ReviewCardView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-
                 if let photoURL = review.authorAttribution?.photoURI {
                     AsyncImage(url: photoURL) { image in
                         image
@@ -63,7 +62,3 @@ struct RatingView: View {
     }
 }
 
-
-//#Preview {
-//    ReviewCardView()
-//}

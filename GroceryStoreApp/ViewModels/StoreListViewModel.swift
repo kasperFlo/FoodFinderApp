@@ -11,6 +11,8 @@ import GooglePlaces
 
 @MainActor
 class StoreListViewModel: ObservableObject {
+    static let shared = StoreListViewModel()
+    
     @Published var stores: [GMSPlace] = []
     @Published var locationService: LocationService
     @Published var googleMapsService: GoogleMapsInteractionService
@@ -19,7 +21,7 @@ class StoreListViewModel: ObservableObject {
     @Published var locationError: Error?
     @Published var isLoading = false
     
-    init(locationService: LocationService = LocationService() , googleMapsService : GoogleMapsInteractionService = GoogleMapsInteractionService()) {
+    private init(locationService: LocationService = LocationService() , googleMapsService : GoogleMapsInteractionService = GoogleMapsInteractionService()) {
         self.locationService = locationService
         self.googleMapsService = googleMapsService
         

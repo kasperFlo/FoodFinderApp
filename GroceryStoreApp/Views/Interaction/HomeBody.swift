@@ -8,33 +8,34 @@ import SwiftUI
 import GooglePlaces
 
 struct HomeBody: View {
-    @StateObject private var viewModel = StoreListViewModel()
+    @StateObject private var StoreVM : StoreListViewModel = StoreListViewModel.shared
+    
     
     var body: some View {
         
             VStack {
-                switch (viewModel.isLoading, viewModel.locationError, viewModel.locationService.currentLocation, viewModel.storesError) {
+                switch (StoreVM.isLoading, StoreVM.locationError, StoreVM.locationService.currentLocation, StoreVM.storesError) {
                 case (true, _, _, _):
                     ProgressView("Fetching location and stores...")
                     
                 case (_, let locationError?, _, _):
-                    ErrorView(error: locationError, retryAction: viewModel.retryFetchLocation)
+                    ErrorView(error: locationError, retryAction: StoreVM.retryFetchLocation)
                     
                 case (_, _, let location?, let storesError?):
                     LocationView(location: location)
-                    ErrorView(error: storesError, retryAction: { Task { await viewModel.fetchNearbyStores() } })
+                    ErrorView(error: storesError, retryAction: { Task { await StoreVM.fetchNearbyStores() } })
                     
                 case (_, _, let location?, _):
                     LocationView(location: location)
-                    StoreListView(stores: viewModel.stores)
+                    StoreListView(stores: StoreVM.stores)
                     
                 case (false, nil, nil, _):
-                    NoLocationView(fetchAction: viewModel.fetchLocation)
+                    NoLocationView(fetchAction: StoreVM.fetchLocation)
                 }
             }
             .onAppear {
                 Task {
-                    await viewModel.fetchNearbyStores()
+                    await StoreVM.fetchNearbyStores()
                 
             }
         }

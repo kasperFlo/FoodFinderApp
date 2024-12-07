@@ -7,9 +7,9 @@
 import SwiftUI
 import GooglePlaces
 
-struct EnhancedRestaurantCard: View {
+struct RestaurantCard: View {
     let store: GMSPlace
-    @EnvironmentObject var favoritesManager: FavoritesManager
+    @ObservedObject var favoritesViewModel : FavoritesViewModel = FavoritesViewModel.shared
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -35,7 +35,6 @@ struct EnhancedRestaurantCard: View {
             }
             
             VStack(alignment: .leading) {
-                // Image section remains the same
                 
                 HStack {
                     Text(store.name ?? "Unknown Store")
@@ -45,13 +44,12 @@ struct EnhancedRestaurantCard: View {
                     
                     Spacer()
                     
-                    Button(action: {
-                                    favoritesManager.toggleFavorite(store)
-                                }) {
-                                    Image(systemName: favoritesManager.isFavorite(store) ? "heart.fill" : "heart")
-                                        .foregroundColor(favoritesManager.isFavorite(store) ? .red : .gray)
-                                        .font(.system(size: 30))
-                                }
+                    Button(action: { favoritesViewModel.toggleFavorite(store) ; print("Clicked Fav : \(store.name!)")}) {
+                            Image(systemName: favoritesViewModel.isFavorite(store) ? "heart.fill" : "heart")
+                                .foregroundColor(favoritesViewModel.isFavorite(store) ? .red : .gray)
+                                .font(.system(size: 30)) 
+                    }
+                    
                 }
                 .padding(.horizontal)
             }
