@@ -20,7 +20,7 @@ struct ReviewCardView: View {
                     .foregroundColor(.gray)
                 
                 VStack(alignment: .leading) {
-                    Text("Anonymous")
+                    Text(review.authorAttribution?.name ?? "Anon")
                         .fontWeight(.medium)
                     RatingView(rating: Int(review.rating))
                 }
