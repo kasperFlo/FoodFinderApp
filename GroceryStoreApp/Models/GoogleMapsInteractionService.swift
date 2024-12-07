@@ -76,17 +76,17 @@ public class GoogleMapsInteractionService {
                 
                 // testing given data
                 
-                results.forEach { place in
-                    if let photos = place.photos {
-                        photos.forEach { photoMetadata in
-                            if let attributions = photoMetadata.attributions {
-                                print("Photo attributions: \(attributions)")
-                            }
-                        }
-                    } else {
-                        print("No photos available for this place")
-                    }
-                }
+//                results.forEach { place in
+//                    if let photos = place.photos {
+//                        photos.forEach { photoMetadata in
+//                            if let attributions = photoMetadata.attributions {
+//                                print("Photo attributions: \(attributions)")
+//                            }
+//                        }
+//                    } else {
+//                        print("No photos available for this place")
+//                    }
+//                }
                 
                 self.placeResults = results
                 continuation.resume(returning: results)

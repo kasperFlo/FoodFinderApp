@@ -88,6 +88,7 @@ class LocationManager: NSObject, ObservableObject {
 
 struct EnhancedRestaurantCard: View {
     let store: GMSPlace
+    @State private var isFavorite: Bool = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -102,7 +103,7 @@ struct EnhancedRestaurantCard: View {
                 } placeholder: {
                     Rectangle()
                         .fill(Color.gray.opacity(0.2))
-                        .frame(height: 100)
+                        .frame(height: 200)
                         .cornerRadius(10)
                 }
             } else {
@@ -112,10 +113,28 @@ struct EnhancedRestaurantCard: View {
                     .cornerRadius(10)
             }
             
-            Text(store.name ?? "Unknown Store")
-                .font(.title3)
-                .fontWeight(.bold)
-            
+            VStack(alignment: .leading) {
+                // Image section remains the same
+                
+                HStack {
+                    Text(store.name ?? "Unknown Store")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .lineLimit(1)
+                    
+                    Spacer()
+                    
+                    Button(action: {
+                        isFavorite.toggle()
+                    }) {
+                        Image(systemName: isFavorite ? "heart.fill" : "heart")
+                            .foregroundColor(isFavorite ? .red : .gray)
+                            .font(.system(size: 30))
+                    }
+                }
+                .padding(.horizontal)
+            }
+            .padding()
             if let address = store.formattedAddress {
                 Text(address)
                     .font(.subheadline)
