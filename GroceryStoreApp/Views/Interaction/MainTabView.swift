@@ -11,20 +11,22 @@ struct MainTabView: View {
     @StateObject var favoritesManager = FavoritesManager()
     
     var body: some View {
-        TabView {
-            HomeBody()
-                .environmentObject(favoritesManager)
-                .tabItem {
-                    Label("Home", systemImage: "house.fill")
-                }
-            
-            FavoritesView()
-                .environmentObject(favoritesManager)
-                .tabItem {
-                    Label("Favorites", systemImage: "heart.fill")
-                }
+        NavigationView {
+            TabView {
+                HomeBody()
+                    .environmentObject(favoritesManager)
+                    .tabItem {
+                        Label("Home", systemImage: "house.fill")
+                    }
+                
+                FavoritesView()
+                    .environmentObject(favoritesManager)
+                    .tabItem {
+                        Label("Favorites", systemImage: "heart.fill")
+                    }
+            }
+            .accentColor(.green)
         }
-        .accentColor(.green)
     }
 }
 

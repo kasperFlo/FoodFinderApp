@@ -14,7 +14,9 @@ struct FavoritesView: View {
         ScrollView {
             VStack(spacing: 16) {
                 ForEach(favoritesManager.favorites, id: \.self) { store in
-                    EnhancedRestaurantCard(store: store)
+                    NavigationLink(destination: RestaurantDetailView(store: store)){
+                        EnhancedRestaurantCard(store: store)
+                    }
                 }
             }
             .padding()

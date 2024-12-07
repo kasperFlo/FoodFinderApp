@@ -11,7 +11,7 @@ struct HomeBody: View {
     @StateObject private var viewModel = StoreListViewModel()
     
     var body: some View {
-        NavigationView {
+        
             VStack {
                 switch (viewModel.isLoading, viewModel.locationError, viewModel.locationService.currentLocation, viewModel.storesError) {
                 case (true, _, _, _):
@@ -35,7 +35,7 @@ struct HomeBody: View {
             .onAppear {
                 Task {
                     await viewModel.fetchNearbyStores()
-                }
+                
             }
         }
     }
