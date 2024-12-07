@@ -8,7 +8,7 @@
 import Combine
 import CoreLocation
 
-class LocationService: NSObject, CLLocationManagerDelegate {
+class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
     // Properties
     private let locationManager = CLLocationManager()
     @Published var currentLocation: CLLocation?

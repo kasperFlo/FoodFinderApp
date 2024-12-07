@@ -39,8 +39,6 @@ struct RestaurantDetailView: View {
                                 Text(String(repeating: "$", count: Int(store.priceLevel.rawValue)))
                                     .foregroundColor(.green)
                             }
-                            Text("•")
-                            Text("1.2 km")
                         }
                         .foregroundColor(.gray)
                     }

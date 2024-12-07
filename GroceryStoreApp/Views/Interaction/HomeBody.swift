@@ -44,9 +44,14 @@ struct HomeBody: View {
 struct LocationView: View {
     let location: CLLocation
     
+//    var body: some View {
+//        Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
+//    }
     var body: some View {
-        Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-    }
+            // Either remove Text entirely or replace with something more useful
+            Text("Nearby Restaurants")
+                .font(.headline)
+        }
 }
 
 //struct StoreListContent: View {
