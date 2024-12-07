@@ -11,6 +11,8 @@ struct StoreListView: View {
     let stores: [GMSPlace]
     @StateObject private var locationService = LocationService()
     @State private var selectedDistance: Double = 5
+    @EnvironmentObject var favoritesManager: FavoritesManager
+
     
     var filteredStores: [GMSPlace] {
         stores.filter { store -> Bool in
@@ -86,10 +88,26 @@ class LocationManager: NSObject, ObservableObject {
     }
 }
 
+class FavoritesManager: ObservableObject {
+    @Published var favorites: [GMSPlace] = []
+    
+    func toggleFavorite(_ store: GMSPlace) {
+        if favorites.contains(store) {
+            favorites.removeAll { $0 == store }
+        } else {
+            favorites.append(store)
+        }
+    }
+    
+    func isFavorite(_ store: GMSPlace) -> Bool {
+        favorites.contains(store)
+    }
+}
+
 struct EnhancedRestaurantCard: View {
     let store: GMSPlace
-    @State private var isFavorite: Bool = false
-    
+    @EnvironmentObject var favoritesManager: FavoritesManager
+
     var body: some View {
         VStack(alignment: .leading) {
             
@@ -125,12 +143,12 @@ struct EnhancedRestaurantCard: View {
                     Spacer()
                     
                     Button(action: {
-                        isFavorite.toggle()
-                    }) {
-                        Image(systemName: isFavorite ? "heart.fill" : "heart")
-                            .foregroundColor(isFavorite ? .red : .gray)
-                            .font(.system(size: 30))
-                    }
+                                    favoritesManager.toggleFavorite(store)
+                                }) {
+                                    Image(systemName: favoritesManager.isFavorite(store) ? "heart.fill" : "heart")
+                                        .foregroundColor(favoritesManager.isFavorite(store) ? .red : .gray)
+                                        .font(.system(size: 30))
+                                }
                 }
                 .padding(.horizontal)
             }

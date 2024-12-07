@@ -8,17 +8,16 @@
 import SwiftUI
 
 struct FavoritesView: View {
+    @EnvironmentObject var favoritesManager: FavoritesManager
+
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 15) {
-                    ForEach(0..<3) { _ in
-                        RestaurantCard()
-                    }
+        ScrollView {
+            VStack(spacing: 16) {
+                ForEach(favoritesManager.favorites, id: \.self) { store in
+                    EnhancedRestaurantCard(store: store)
                 }
-                .padding()
             }
-            .navigationTitle("Favorites")
+            .padding()
         }
     }
 }
