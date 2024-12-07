@@ -10,6 +10,8 @@ import SwiftUI
 struct FavoritesView: View {
     @StateObject var favoritesViewModel: FavoritesViewModel = FavoritesViewModel.shared
 
+    // TODO add top bar here or something add some ui flair / consistancy throughout the entire application
+    
     var body: some View {
         ScrollView {
             if favoritesViewModel.favoriteStores.isEmpty {

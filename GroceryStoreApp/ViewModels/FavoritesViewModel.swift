@@ -27,3 +27,6 @@ class FavoritesViewModel: ObservableObject {
     }
     
 }
+
+
+// TODO implement some sort of saving , with core data or firebase
