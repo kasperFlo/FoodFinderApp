@@ -24,18 +24,21 @@ struct RestaurantDetailView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     // Header
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Restaurant Name")
-                            .font(.title)
+                        Text(store.name ?? "Unknown Store")
+                            .font(.title3)
                             .fontWeight(.bold)
                         
                         HStack(spacing: 12) {
                             HStack {
                                 Image(systemName: "star.fill")
                                     .foregroundColor(.yellow)
-                                Text("4.5 (128 reviews)")
+                                Text(String(format: "%.1f", store.rating))
                             }
                             Text("•")
-                            Text("$$$ - Expensive")
+                            if store.priceLevel.rawValue > 0 {
+                                Text(String(repeating: "$", count: Int(store.priceLevel.rawValue)))
+                                    .foregroundColor(.green)
+                            }
                             Text("•")
                             Text("1.2 km")
                         }
@@ -44,7 +47,11 @@ struct RestaurantDetailView: View {
                     
                     // Actions
                     HStack(spacing: 20) {
-                        Button(action: {}) {
+                        Button(action: {
+                            if let website = store.website {
+                                UIApplication.shared.open(website)
+                            }
+                        }) {
                             Label("Website", systemImage: "globe")
                         }
                         Button(action: {}) {
@@ -58,15 +65,31 @@ struct RestaurantDetailView: View {
                     
                     // Contact Info
                     VStack(alignment: .leading, spacing: 8) {
-                        LabeledContent {
-                            Text("(555) 123-4567")
-                        } label: {
-                            Label("Phone", systemImage: "phone")
-                                .fontWeight(.medium)
+                        Button(action: {
+                            if let phoneNumber = store.phoneNumber?.replacingOccurrences(of: " ", with: ""),
+                               let url = URL(string: "tel://\(phoneNumber)"),
+                               UIApplication.shared.canOpenURL(url) {
+                                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                            }
+                        }) {
+                            Label(
+                                title: { Text(store.phoneNumber ?? "") },
+                                icon: { Image(systemName: "phone") }
+                            )
+                            .foregroundColor(.black)
                         }
+//                        } label: {
+//                            Label("Phone", systemImage: "phone")
+//                                .fontWeight(.medium)
+//                        }
                         
                         LabeledContent {
-                            Text("www.restaurant.com")
+                            if let website = store.website {
+                                Link(website.absoluteString, destination: website)
+                                    .font(.caption)
+                                    .foregroundColor(.blue)
+                                    .lineLimit(1)
+                            }
                         } label: {
                             Label("Website", systemImage: "globe")
                                 .fontWeight(.medium)
@@ -78,10 +101,20 @@ struct RestaurantDetailView: View {
                         Label("Hours", systemImage: "clock")
                             .font(.headline)
                         
-                        VStack(alignment: .leading) {
-                            Text("Monday - Friday: 9:00 AM - 10:00 PM")
-                            Text("Saturday: 10:00 AM - 11:00 PM")
-                            Text("Sunday: 10:00 AM - 9:00 PM")
+                        Grid(alignment: .leading) {
+                            if let hours = store.currentOpeningHours?.weekdayText {
+                                ForEach(hours, id: \.self) { dayHours in
+                                    GridRow {
+                                        let components = dayHours.components(separatedBy: ": ")
+                                        if components.count == 2 {
+                                            Text(components[0] + ":")
+                                            Text(components[1])
+                                        }
+                                    }
+                                }
+                            } else {
+                                Text("Hours not available")
+                            }
                         }
                         .foregroundColor(.gray)
                     }
@@ -90,19 +123,31 @@ struct RestaurantDetailView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Location", systemImage: "location")
                             .font(.headline)
-                        Text("123 Restaurant Street")
-                        Text("City, State 12345")
-                        Text("1.2 kilometers away")
-                            .foregroundColor(.gray)
+                        
+                        HStack(spacing: 8) {
+                            Text(store.formattedAddress ?? "Address not available")
+                                .foregroundColor(.gray)
+                            
+                            Button(action: {
+                                UIPasteboard.general.string = store.formattedAddress
+                                let generator = UINotificationFeedbackGenerator()
+                                generator.notificationOccurred(.success)
+                            }) {
+                                Image(systemName: "doc.on.clipboard")
+                                    .foregroundColor(.blue)
+                                    .imageScale(.medium)
+                            }
+                            .buttonStyle(PlainButtonStyle())
+                        }
                     }
+                    .padding(.vertical, 4)
                     
                     // Reviews Section for the customer reviews
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text("Reviews")
-                            .font(.headline)
-                        
-                        ForEach(1...3, id: \.self) { _ in
-                            ReviewCard()
+                    if let reviews = store.reviews {
+                        ForEach(Array(reviews.enumerated()), id: \.offset) { _, review in
+                            if let placeReview = review as? GMSPlaceReview {
+                                ReviewCardView(review: placeReview)
+                            }
                         }
                     }
                 }

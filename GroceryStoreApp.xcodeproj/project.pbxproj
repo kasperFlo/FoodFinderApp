@@ -15,9 +15,22 @@
 		17DCC4952CB8B605006D4FCA /* GroceryStoreApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroceryStoreApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		0407DB222D03DEA300CB06D1 /* Exceptions for "GroceryStoreApp" folder in "GroceryStoreApp" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 17DCC4942CB8B605006D4FCA /* GroceryStoreApp */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		17DCC4972CB8B605006D4FCA /* GroceryStoreApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				0407DB222D03DEA300CB06D1 /* Exceptions for "GroceryStoreApp" folder in "GroceryStoreApp" target */,
+			);
 			path = GroceryStoreApp;
 			sourceTree = "<group>";
 		};
@@ -267,6 +280,7 @@
 				DEVELOPMENT_TEAM = 3229ZS96AN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroceryStoreApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location Is Needed";
@@ -299,6 +313,7 @@
 				DEVELOPMENT_TEAM = 3229ZS96AN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = GroceryStoreApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Location Is Needed";

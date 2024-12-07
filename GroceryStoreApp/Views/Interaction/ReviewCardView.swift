@@ -6,8 +6,11 @@
 //
 
 import SwiftUI
+import GooglePlaces
 
-struct ReviewCard: View {
+struct ReviewCardView: View {
+    let review: GMSPlaceReview
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -17,21 +20,12 @@ struct ReviewCard: View {
                     .foregroundColor(.gray)
                 
                 VStack(alignment: .leading) {
-                    Text("John Doe")
+                    Text("Anonymous")
                         .fontWeight(.medium)
-                    HStack {
-                        ForEach(0..<5) { _ in
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                        }
-                        Text("• 2 days ago")
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                    }
+                    RatingView(rating: Int(review.rating))
                 }
             }
-            
-            Text("Great food and atmosphere! The service was excellent and the prices are reasonable.")
+            Text(review.text ?? "No review text")
                 .foregroundColor(.gray)
         }
         .padding()
@@ -40,7 +34,21 @@ struct ReviewCard: View {
     }
 }
 
-
-#Preview {
-    ReviewCard()
+struct RatingView: View {
+    let rating: Int
+    
+    var body: some View {
+        HStack {
+            ForEach(0..<5, id: \.self) { index in
+                Image(systemName: index < rating ? "star.fill" :
+                     (index == rating && rating < 5) ? "star.leadinghalf.filled" : "star")
+                    .foregroundColor(.yellow)
+            }
+        }
+    }
 }
+
+
+//#Preview {
+//    ReviewCardView()
+//}

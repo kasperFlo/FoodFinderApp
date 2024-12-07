@@ -37,7 +37,10 @@ public class GoogleMapsInteractionService {
                 GMSPlaceProperty.website,
                 GMSPlaceProperty.photos,
                 GMSPlaceProperty.iconImageURL,
-                GMSPlaceProperty.phoneNumber
+                GMSPlaceProperty.phoneNumber,
+                GMSPlaceProperty.openingHours,
+                GMSPlaceProperty.currentOpeningHours,
+                GMSPlaceProperty.reviews
             ].map { $0.rawValue }
             
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
