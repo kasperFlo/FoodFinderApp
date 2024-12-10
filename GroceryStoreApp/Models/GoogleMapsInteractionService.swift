@@ -8,8 +8,12 @@
 import Foundation
 import GooglePlaces
 import os
+import SwiftUI
 
-public class GoogleMapsInteractionService {
+
+public class GoogleMapsInteractionService : ObservableObject{
+    
+    static let shared = GoogleMapsInteractionService()
     
     private let placesClient: GMSPlacesClient
     var placeResults: [GMSPlace] = []
@@ -41,7 +45,6 @@ public class GoogleMapsInteractionService {
                 GMSPlaceProperty.openingHours,
                 GMSPlaceProperty.currentOpeningHours,
                 GMSPlaceProperty.reviews,
-                GMSPlaceProperty.types
             ].map { $0.rawValue }
             
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
@@ -65,28 +68,28 @@ public class GoogleMapsInteractionService {
                     continuation.resume(throwing: error)
                     return
                 }
-
+                
                 guard let results = results else {
                     print("No results found or invalid result type")
                     continuation.resume(returning: [])
                     return
                 }
-
+                
                 print("Successfully fetched \(results.count) nearby stores")
                 
                 // testing given data
                 
-//                results.forEach { place in
-//                    if let photos = place.photos {
-//                        photos.forEach { photoMetadata in
-//                            if let attributions = photoMetadata.attributions {
-//                                print("Photo attributions: \(attributions)")
-//                            }
-//                        }
-//                    } else {
-//                        print("No photos available for this place")
-//                    }
-//                }
+                results.forEach { place in
+                    if let photos = place.photos {
+                        photos.forEach { photoMetadata in
+                            if let attributions = photoMetadata.attributions {
+                                print("Photo attributions: \(attributions)")
+                            }
+                        }
+                    } else {
+                        print("No photos available for this place")
+                    }
+                }
                 
                 self.placeResults = results
                 continuation.resume(returning: results)
@@ -95,4 +98,28 @@ public class GoogleMapsInteractionService {
             placesClient.searchNearby(with: request, callback: callback)
         }
     }
+
+    public func loadPlacePhoto(from place: GMSPlace, completion: @escaping (UIImage?) -> Void) {
+        
+        guard let photos = place.photos, let firstPhoto = photos.first else {
+            completion(nil)
+            return
+        }
+        
+        let fetchPhotoRequest = GMSFetchPhotoRequest(
+            photoMetadata: firstPhoto,
+            maxSize: CGSize(width: 300, height: 300)
+        )
+        
+        self.placesClient.fetchPhoto(with: fetchPhotoRequest) { image, error in
+            if let error = error {
+                print("Error loading photo: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            completion(image)
+        }
+    }
+
+    
 }

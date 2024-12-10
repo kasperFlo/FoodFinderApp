@@ -10,29 +10,26 @@ import GooglePlaces
 struct RestaurantCard: View {
     let store: GMSPlace
     @ObservedObject var favoritesViewModel : FavoritesViewModel = FavoritesViewModel.shared
-
+    @ObservedObject var placesClient : GoogleMapsInteractionService = GoogleMapsInteractionService.shared
+    
+    @State private var placeImage: Image?
+    
     var body: some View {
         VStack(alignment: .leading) {
             
-            if let iconURL = store.iconImageURL {
-                AsyncImage(url: iconURL) { image in
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(height: 100)
-                        .cornerRadius(10)
-                } placeholder: {
-                    Rectangle()
-                        .fill(Color.gray.opacity(0.2))
-                        .frame(height: 100)
-                        .cornerRadius(10)
-                }
-            } else {
+            if let image = placeImage {
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: 100)
+                    .cornerRadius(10)
+            }  else {
                 Rectangle()
                     .fill(Color.gray.opacity(0.2))
                     .frame(height: 100)
                     .cornerRadius(10)
             }
+            
             
             VStack(alignment: .leading) {
                 
@@ -45,9 +42,9 @@ struct RestaurantCard: View {
                     Spacer()
                     
                     Button(action: { favoritesViewModel.toggleFavorite(store) ; print("Clicked Fav : \(store.name!)")}) {
-                            Image(systemName: favoritesViewModel.isFavorite(store) ? "heart.fill" : "heart")
-                                .foregroundColor(favoritesViewModel.isFavorite(store) ? .red : .gray)
-                                .font(.system(size: 30)) 
+                        Image(systemName: favoritesViewModel.isFavorite(store) ? "heart.fill" : "heart")
+                            .foregroundColor(favoritesViewModel.isFavorite(store) ? .red : .gray)
+                            .font(.system(size: 30))
                     }
                     
                 }
@@ -95,6 +92,15 @@ struct RestaurantCard: View {
         .background(Color.white)
         .cornerRadius(15)
         .shadow(radius: 2)
+        .onAppear{
+            placesClient.loadPlacePhoto(from : store) { uiImage in
+                if let uiImage = uiImage {
+                    DispatchQueue.main.async {
+                        self.placeImage = Image(uiImage: uiImage)
+                    }
+                }
+            }
+            
+        }
     }
-    
 }
