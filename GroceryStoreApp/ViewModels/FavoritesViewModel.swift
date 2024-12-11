@@ -77,16 +77,24 @@ class FavoritesViewModel: ObservableObject {
     }
     
     func toggleFavorite(_ place: GMSPlace) {
+        print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(place.placeID)")
         if isFavorite(place) {
+            print("Removing from favorites")
             removeFavorite(place)
         } else {
+            print("Adding to favorites")
             addFavorite(place)
         }
         
         Task { await syncFavoriteStores() }
     }
     func isFavorite(_ place: GMSPlace) -> Bool {
-        return favorites.contains { $0.placeID == place.placeID }
+        
+        return favorites.contains { favorite in
+            guard let favoritePlaceID = favorite.placeID else { return false }
+            return favoritePlaceID == place.placeID
+        }
+        
     }
     func addFavorite(_ place: GMSPlace)  {
         let favorite = FavoritePlace(context: viewContext)

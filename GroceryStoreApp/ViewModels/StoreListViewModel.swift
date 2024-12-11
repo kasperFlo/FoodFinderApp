@@ -35,14 +35,17 @@ class StoreListViewModel: ObservableObject {
         
         isLoading = true
         do {
-            stores = try await googleMapsService.fetchNearbyStores(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+            stores = try await googleMapsService.fetchNearbyStores(
+                latitude: location.coordinate.latitude,
+                longitude: location.coordinate.longitude,
+                range: 1000
+            )
             storesError = nil
         } catch {
             storesError = error
             stores = []
         }
         isLoading = false
-        
     }
     
     func fetchLocation() {

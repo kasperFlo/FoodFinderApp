@@ -30,15 +30,13 @@ public class GoogleMapsInteractionService : ObservableObject{
     
     
     // Fetch nearby stores within 1000m radius of given coordinates
-    public func fetchNearbyStores(latitude: Double, longitude: Double) async throws -> [GMSPlace] {
+    public func fetchNearbyStores(latitude: Double, longitude: Double, range : Double = 5) async throws -> [GMSPlace] {
         return try await withCheckedThrowingContinuation { continuation in
             logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
             
-            
             // Set up search area with 1km radius
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let searchArea = GMSPlaceCircularLocationOption(coordinate, 1000)
-            
+            let searchArea = GMSPlaceCircularLocationOption(coordinate, range)
             
             // Define place properties to fetch
             let placeProperties = [
@@ -52,9 +50,9 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.photos,
                 GMSPlaceProperty.iconImageURL,
                 GMSPlaceProperty.phoneNumber,
+                
                 GMSPlaceProperty.openingHours,
                 GMSPlaceProperty.currentOpeningHours,
-                GMSPlaceProperty.reviews,
                 GMSPlaceProperty.servesBeer,
                 GMSPlaceProperty.servesVegetarianFood,
                 GMSPlaceProperty.takeout,
@@ -62,8 +60,6 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.servesLunch,
                 GMSPlaceProperty.servesDinner
             ].map { $0.rawValue }
-            
-            
             
             // Configure search request, setting it up 
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
@@ -96,19 +92,20 @@ public class GoogleMapsInteractionService : ObservableObject{
                 
                 print("Successfully fetched \(results.count) nearby stores")
                 
+                
                 // testing given data
                 
-                results.forEach { place in
-                    if let photos = place.photos {
-                        photos.forEach { photoMetadata in
-                            if let attributions = photoMetadata.attributions {
-                                print("Photo attributions: \(attributions)")
-                            }
-                        }
-                    } else {
-                        print("No photos available for this place")
-                    }
-                }
+//                results.forEach { place in
+//                    if let photos = place.photos {
+//                        photos.forEach { photoMetadata in
+//                            if let attributions = photoMetadata.attributions {
+//                                print("Photo attributions: \(attributions)")
+//                            }
+//                        }
+//                    } else {
+//                        print("No photos available for this place")
+//                    }
+//                }
                 
                 self.placeResults = results
                 continuation.resume(returning: results)
