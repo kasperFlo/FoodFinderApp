@@ -14,7 +14,7 @@ struct MainTabView: View {
             TabView {
                 HomeBody()
                     .tabItem {
-                        Label("Home", systemImage: "house.fill")
+                        Label("Food Spots", systemImage: "fork.knife")
                     }
                 
                 FavoritesView()
@@ -22,16 +22,26 @@ struct MainTabView: View {
                         Label("Favorites", systemImage: "heart.fill")
                     }
             }
-            .accentColor(.green)
+            .tint(.blue)
             .onAppear {
-                // Set background color for tab bar
                 let appearance = UITabBarAppearance()
                 appearance.backgroundColor = .white
-                UITabBar.appearance().scrollEdgeAppearance = appearance
+                
+                // Configure tab bar items appearance
+                let itemAppearance = UITabBarItemAppearance()
+                itemAppearance.normal.iconColor = .gray
+                itemAppearance.selected.iconColor = .systemBlue
+                appearance.stackedLayoutAppearance = itemAppearance
+                
+                // Add subtle shadow
+                appearance.shadowColor = .gray.withAlphaComponent(0.2)
+                
                 UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
             }
         }
     }
+
 }
 
 //#Preview {

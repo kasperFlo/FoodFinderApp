@@ -10,16 +10,34 @@ import GooglePlaces
 
 struct RestaurantDetailView: View {
     var store : GMSPlace
+    @State private var placeImage: Image?
+    @ObservedObject var placesClient: GoogleMapsInteractionService = GoogleMapsInteractionService.shared
+
+
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 
-                Rectangle()
-                    .fill(Color.gray.opacity(0.2))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 250)
-                    .ignoresSafeArea(edges: .top)
+                Group {
+                    if let image = placeImage {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: 180)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                    } else {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.1))
+                            .frame(height: 180)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(
+                                Image(systemName: "photo")
+                                    .font(.system(size: 30))
+                                    .foregroundColor(.gray)
+                            )
+                    }
+                }
                 
                 VStack(alignment: .leading, spacing: 24) {
                     // Header
@@ -153,8 +171,18 @@ struct RestaurantDetailView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            placesClient.loadPlacePhoto(from: store) { uiImage in
+                if let uiImage = uiImage {
+                    DispatchQueue.main.async {
+                        self.placeImage = Image(uiImage: uiImage)
+                    }
+                }
+            }
+        }
     }
 }
+
 
 //struct ReviewCard: View {
 //    var body: some View {

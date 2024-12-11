@@ -50,8 +50,9 @@ struct LocationView: View {
 //    }
     var body: some View {
             // Either remove Text entirely or replace with something more useful
-            Text("Nearby Restaurants")
+            Text(".")
                 .font(.headline)
+                .opacity(0)
         }
 }
 

@@ -45,6 +45,12 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.openingHours,
                 GMSPlaceProperty.currentOpeningHours,
                 GMSPlaceProperty.reviews,
+                GMSPlaceProperty.servesBeer,
+                GMSPlaceProperty.servesVegetarianFood,
+                GMSPlaceProperty.takeout,
+                GMSPlaceProperty.servesBreakfast,
+                GMSPlaceProperty.servesLunch,
+                GMSPlaceProperty.servesDinner
             ].map { $0.rawValue }
             
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
