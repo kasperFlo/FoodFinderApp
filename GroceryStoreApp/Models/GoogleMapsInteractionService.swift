@@ -44,7 +44,6 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.phoneNumber,
                 GMSPlaceProperty.openingHours,
                 GMSPlaceProperty.currentOpeningHours,
-                GMSPlaceProperty.reviews,
             ].map { $0.rawValue }
             
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
@@ -79,17 +78,17 @@ public class GoogleMapsInteractionService : ObservableObject{
                 
                 // testing given data
                 
-                results.forEach { place in
-                    if let photos = place.photos {
-                        photos.forEach { photoMetadata in
-                            if let attributions = photoMetadata.attributions {
-                                print("Photo attributions: \(attributions)")
-                            }
-                        }
-                    } else {
-                        print("No photos available for this place")
-                    }
-                }
+//                results.forEach { place in
+//                    if let photos = place.photos {
+//                        photos.forEach { photoMetadata in
+//                            if let attributions = photoMetadata.attributions {
+//                                print("Photo attributions: \(attributions)")
+//                            }
+//                        }
+//                    } else {
+//                        print("No photos available for this place")
+//                    }
+//                }
                 
                 self.placeResults = results
                 continuation.resume(returning: results)
@@ -121,5 +120,7 @@ public class GoogleMapsInteractionService : ObservableObject{
         }
     }
 
+    
+    
     
 }

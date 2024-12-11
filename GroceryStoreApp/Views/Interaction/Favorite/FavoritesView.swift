@@ -14,7 +14,7 @@ struct FavoritesView: View {
     
     var body: some View {
         ScrollView {
-            if favoritesViewModel.favoriteStores.isEmpty {
+            if favoritesViewModel.favorites.isEmpty {
                 VStack {
                     Image(systemName: "heart.slash")
                         .font(.system(size: 50))
