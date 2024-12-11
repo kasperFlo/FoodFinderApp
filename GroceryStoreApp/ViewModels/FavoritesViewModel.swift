@@ -22,106 +22,110 @@ class FavoritesViewModel: ObservableObject {
     
     // this property is used to notify views of changes to favorites list
     @Published var favoriteStores: [GMSPlace] = []
-    @Published public var favorites: [FavoritePlace] = []
+    @Published public var localFavoritesInfo: [FavoritePlace] = []
     
     private init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.viewContext = context
         self.placesClient = GoogleMapsInteractionService.shared
         
-        fetchFavorites()
-        Task { await syncFavoriteStores() }
+        Task { await startUpPull() }
     }
     
-    private func syncFavoriteStores() async {
-        var stores: [GMSPlace] = []
+    func startUpPull() async {
+        print("Starting Pull From Core Data")
         
-        for favorite in favorites {
+        let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
+        do {
+            localFavoritesInfo = try viewContext.fetch(request)
+        } catch {
+            print("Error fetching local favorites: \(error)")
+            localFavoritesInfo = []
+        }
+        
+        var tempStores: [GMSPlace] = []
+        
+        for favorite in localFavoritesInfo {
             do {
+                // Fetch nearby places using stored coordinates
                 let nearbyPlaces = try await placesClient.fetchNearbyStores(
                     latitude: favorite.latitude,
-                    longitude: favorite.longitude
+                    longitude: favorite.longitude,
+                    range: 1
                 )
                 
+                // Find matching place by ID
                 if let matchingPlace = nearbyPlaces.first(where: { $0.placeID == favorite.placeID }) {
-                    stores.append(matchingPlace)
+                    tempStores.append(matchingPlace)
                 }
             } catch {
                 print("Error fetching place: \(error)")
             }
         }
+        self.favoriteStores = tempStores
+        printCurrentPlaces()
         
-        await MainActor.run {
-            self.favoriteStores = stores
-        }
+        print("Ending Pull From Core Data")
     }
-    func fetchFavorites() {
-        let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
+    func pushToCore() {
+        // Clear existing Core Data entries
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoritePlace")
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
         do {
-            favorites = try viewContext.fetch(request)
-        } catch {
-            print("Error fetching favorites: \(error)")
-        }
-    }
-    func save() {
-        do {
+            try viewContext.execute(batchDeleteRequest)
+            
+            // Add each local favorite to Core Data
+            for store in favoriteStores {
+                let favorite = FavoritePlace(context: viewContext)
+                favorite.placeID = store.placeID
+                favorite.latitude = store.coordinate.latitude
+                favorite.longitude = store.coordinate.longitude
+            }
+            // Save context
             try viewContext.save()
-            fetchFavorites()
-            Task {
-                await syncFavoriteStores()
-            }
         } catch {
-            print("Error saving context: \(error)")
+            print("Error saving to Core Data: \(error)")
         }
     }
     
+    // local managing functions
     func toggleFavorite(_ place: GMSPlace) {
-        print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(place.placeID)")
-    
+        print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(String(describing: place.placeID))")
         if isFavorite(place) {
-            print("Removing from favorites")
-            removeFavorite(place)
+            removeFavorite(place) ; print("Removing from favorites")
         } else {
-            print("Adding to favorites")
-            addFavorite(place)
+            addFavorite(place) ; print("Adding to favorites")
         }
-        
-        objectWillChange.send()
-        Task {
-            await syncFavoriteStores()
-            // Force another UI update after sync
-            await MainActor.run {
-                objectWillChange.send()
-            }
-        }
+        pushToCore()
     }
     func isFavorite(_ place: GMSPlace) -> Bool {
         // Check if the specific placeID exists in favorites
-        guard let placeID = place.placeID else { return false }
-        return favoriteStores.contains { store in
-            store.placeID == placeID
+//        guard let placeID = place.placeID else { return false }
+        return favoriteStores.contains { fStoreCurrent in
+            place.placeID == fStoreCurrent.placeID
         }
     }
     func addFavorite(_ place: GMSPlace)  {
-        // Check if place already exists in favorites
-        if favorites.contains(where: { $0.placeID == place.placeID }) {
+        if favoriteStores.contains(where: { $0.placeID == place.placeID }) {
             print("Place already in favorites: \(place.name ?? "unknown")")
             return
         }
-        
-        let favorite = FavoritePlace(context: viewContext)
-        favorite.placeID = place.placeID
-        favorite.latitude = place.coordinate.latitude
-        favorite.longitude = place.coordinate.longitude
-        
-        save()
+        favoriteStores.append(place)
     }
     func removeFavorite(_ place: GMSPlace)  {
-        if let favorite = favorites.first(where: { $0.placeID == place.placeID }) {
-            viewContext.delete(favorite)
-            save()
+        favoriteStores.removeAll { $0.placeID == place.placeID }
+    }
+    
+    // helper functions
+    func printCurrentPlaces(){
+        print("---- Current Resturants in GMSplace-----")
+        favoriteStores.forEach { place in
+            if let name = place.name, let id = place.placeID {
+                print("Name: \(name), ID: \(id)")
+            }
         }
+        print("---- End Current Resturants in GMSplace-----")
     }
     
 }
-
 

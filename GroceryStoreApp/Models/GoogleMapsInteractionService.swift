@@ -43,6 +43,7 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.name,
                 GMSPlaceProperty.coordinate,
                 GMSPlaceProperty.rating,
+                GMSPlaceProperty.placeID,
                 GMSPlaceProperty.reviews,
                 GMSPlaceProperty.priceLevel,
                 GMSPlaceProperty.formattedAddress,
@@ -90,11 +91,11 @@ public class GoogleMapsInteractionService : ObservableObject{
                     return
                 }
                 
-                print("Successfully fetched \(results.count) nearby stores")
+
                 
                 
                 // testing given data
-                
+//                print("Successfully fetched \(results.count) nearby stores")
 //                results.forEach { place in
 //                    if let photos = place.photos {
 //                        photos.forEach { photoMetadata in
