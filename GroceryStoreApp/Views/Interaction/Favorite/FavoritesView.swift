@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+// this displays the favorited restaurants the user selected
+// displays list of favorite restaurants
+// you an still go through the restaurant details through this
+
+
 struct FavoritesView: View {
+    
+    // stateObject to maintain the favorites data across view updating
     @StateObject var favoritesViewModel: FavoritesViewModel = FavoritesViewModel.shared
 
-    // TODO add top bar here or something add some ui flair / consistancy throughout the entire application
     
     var body: some View {
         ScrollView {
+            
+            // will display a no saved favorites if user hasnt liked any
             if favoritesViewModel.favoriteStores.isEmpty {
                 VStack {
                     Image(systemName: "heart.slash")
@@ -27,6 +35,8 @@ struct FavoritesView: View {
                         .padding(.top)
                 }
             } else {
+                
+                // if the user did like and save a restaurant then we can see the restuarants with their detailed info 
                 VStack(spacing: 16) {
                     ForEach(favoritesViewModel.favoriteStores, id: \.self) { store in
                         NavigationLink(destination: RestaurantDetailView(store: store)){

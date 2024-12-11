@@ -2,20 +2,32 @@
 //  EnhancedResturant.swift
 //  GroceryStoreApp
 //
-//  Created by Flrorian Kasperbauer on 2024-12-07.
+//  Created by Suthakaran Siva on 2024-12-07.
 //
 import SwiftUI
 import GooglePlaces
 
+// displays the information in a nicer way for each restaurant
+// restaurant details in broad spectrum
+
 struct RestaurantCard: View {
+    
+    // data of restaurants from google places api
     let store: GMSPlace
+    
+    // this is a call for the viewmodel, it manages favorites state
     @ObservedObject var favoritesViewModel: FavoritesViewModel = FavoritesViewModel.shared
+    
+    // this handles the google places API interaction
     @ObservedObject var placesClient: GoogleMapsInteractionService = GoogleMapsInteractionService.shared
+    
+    // this stores and loads restaurant image
     @State private var placeImage: Image?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Restaurant Image
+            
+            // Restaurant Image of what the restaurant looks like
             Group {
                 if let image = placeImage {
                     image
@@ -36,7 +48,7 @@ struct RestaurantCard: View {
                 }
             }
             
-            // Restaurant Name and Favorite Button
+            // Name of the restaurant and the liking button so the user can save their favorite restaurant
             HStack {
                 Text(store.name ?? "Unknown Store")
                     .font(.title3)
@@ -45,6 +57,8 @@ struct RestaurantCard: View {
                 
                 Spacer()
                 
+                // using the favorite viewmodel we populate with the restaurant into the view
+                // theres a button to like the restaurant itself
                 Button(action: {
                     favoritesViewModel.toggleFavorite(store)
                 }) {
@@ -54,7 +68,7 @@ struct RestaurantCard: View {
                 }
             }
             
-            // Address
+            // this will display the address of the restaurant taken from the api
             if let address = store.formattedAddress {
                 Text(address)
                     .font(.subheadline)
@@ -62,7 +76,9 @@ struct RestaurantCard: View {
                     .lineLimit(2)
             }
             
-            // Rating and Details
+            // here we display the ratings and price level for the the restaurant
+            // it will show a star and the rating out of 5
+            // the price level is determined by the $, so $ is cheap and $$$ is expensive
             HStack(spacing: 12) {
                 // Rating
                 HStack(spacing: 4) {
@@ -79,7 +95,7 @@ struct RestaurantCard: View {
                         .fontWeight(.medium)
                 }
                 
-                // Phone Number
+                // shows the Phone Number of the place
                 if let phoneNumber = store.phoneNumber {
                     HStack(spacing: 4) {
                         Image(systemName: "phone.fill")
@@ -90,7 +106,7 @@ struct RestaurantCard: View {
             }
             .font(.subheadline)
             
-            // Website
+            // this is the Website to the place
             if let website = store.website {
                 Text(website.absoluteString)
                     .font(.caption)
@@ -110,6 +126,8 @@ struct RestaurantCard: View {
                 )
         )
         .onAppear {
+            
+            // ensurtes the image is loaded with the UI
             placesClient.loadPlacePhoto(from: store) { uiImage in
                 if let uiImage = uiImage {
                     DispatchQueue.main.async {

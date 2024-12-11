@@ -9,8 +9,14 @@ import SwiftUI
 import GooglePlaces
 
 struct RestaurantDetailView: View {
+    
+    // data of restaurants from google places api
     var store : GMSPlace
+    
+    // this stores and loads restaurant image
     @State private var placeImage: Image?
+    
+    // this handles the google places API interaction
     @ObservedObject var placesClient: GoogleMapsInteractionService = GoogleMapsInteractionService.shared
 
 
@@ -19,18 +25,19 @@ struct RestaurantDetailView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 
+                // Restaurant Image of what the restaurant looks like
                 Group {
                     if let image = placeImage {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(height: 180)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipShape(RoundedRectangle(cornerRadius: 1))
                     } else {
                         Rectangle()
                             .fill(Color.gray.opacity(0.1))
                             .frame(height: 180)
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                             .overlay(
                                 Image(systemName: "photo")
                                     .font(.system(size: 30))
@@ -39,13 +46,17 @@ struct RestaurantDetailView: View {
                     }
                 }
                 
+                
                 VStack(alignment: .leading, spacing: 24) {
                     // Header
+                    // the store name
                     VStack(alignment: .leading, spacing: 8) {
                         Text(store.name ?? "Unknown Store")
                             .font(.title3)
                             .fontWeight(.bold)
                         
+                    // same thing displaying the user rating
+                    // the price level is also displayed
                         HStack(spacing: 12) {
                             HStack {
                                 Image(systemName: "star.fill")
@@ -57,29 +68,32 @@ struct RestaurantDetailView: View {
                                 Text(String(repeating: "$", count: Int(store.priceLevel.rawValue)))
                                     .foregroundColor(.green)
                             }
+                            
+                            // Action buttons for the website, phone, share button
+                            HStack(spacing: 10) {
+                                Button(action: {
+                                    if let website = store.website {
+                                        UIApplication.shared.open(website)
+                                    }
+                                }) {
+                                    Label("Website", systemImage: "globe")
+                                }
+                                Button(action: {}) {
+                                    Label("Call", systemImage: "phone")
+                                }
+                                Button(action: {}) {
+                                    Label("Share", systemImage: "square.and.arrow.up")
+                                }
+                            }
+                            .foregroundColor(.green)
                         }
                         .foregroundColor(.gray)
+                        
                     }
                     
-                    // Actions
-                    HStack(spacing: 20) {
-                        Button(action: {
-                            if let website = store.website {
-                                UIApplication.shared.open(website)
-                            }
-                        }) {
-                            Label("Website", systemImage: "globe")
-                        }
-                        Button(action: {}) {
-                            Label("Call", systemImage: "phone")
-                        }
-                        Button(action: {}) {
-                            Label("Share", systemImage: "square.and.arrow.up")
-                        }
-                    }
-                    .foregroundColor(.green)
+                
                     
-                    // Contact Info
+                    // Contact Information
                     VStack(alignment: .leading, spacing: 8) {
                         Button(action: {
                             if let phoneNumber = store.phoneNumber?.replacingOccurrences(of: " ", with: ""),
@@ -94,11 +108,8 @@ struct RestaurantDetailView: View {
                             )
                             .foregroundColor(.black)
                         }
-//                        } label: {
-//                            Label("Phone", systemImage: "phone")
-//                                .fontWeight(.medium)
-//                        }
                         
+                        // website like of the store, redirects you to it
                         LabeledContent {
                             if let website = store.website {
                                 Link(website.absoluteString, destination: website)
@@ -112,7 +123,7 @@ struct RestaurantDetailView: View {
                         }
                     }
                     
-                    // Hours they are open
+                    // Hours they are open, from all 7 days a week
                     VStack(alignment: .leading, spacing: 8) {
                         Label("Hours", systemImage: "clock")
                             .font(.headline)

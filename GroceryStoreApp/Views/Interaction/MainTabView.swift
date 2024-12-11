@@ -10,13 +10,20 @@ import SwiftUI
 struct MainTabView: View {
 
     var body: some View {
+        
+        // Wraps the TabView in a NavigationView for navigation capabilities
         NavigationView {
+            
+            // Creates a tab-based interface with two tabs
             TabView {
+                
+                // First tab showing the main food spots screen
                 HomeBody()
                     .tabItem {
                         Label("Food Spots", systemImage: "fork.knife")
                     }
                 
+                // Second tab showing favorites screen
                 FavoritesView()
                     .tabItem {
                         Label("Favorites", systemImage: "heart.fill")
@@ -24,6 +31,8 @@ struct MainTabView: View {
             }
             .tint(.blue)
             .onAppear {
+                
+                // Configures how tab items look
                 let appearance = UITabBarAppearance()
                 appearance.backgroundColor = .white
                 

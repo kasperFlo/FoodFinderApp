@@ -11,26 +11,36 @@ import os
 import SwiftUI
 
 
+// Service class to handle interactions with Google Maps Places API
 public class GoogleMapsInteractionService : ObservableObject{
     
+    // Singleton instance for global access
     static let shared = GoogleMapsInteractionService()
     
+    // Private properties for Places client and results storage
     private let placesClient: GMSPlacesClient
     var placeResults: [GMSPlace] = []
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "GoogleMapsInteractionService")
     
+    // Initialize the service with shared Places client
     public init() {
         self.placesClient = GMSPlacesClient.shared()
         logger.info("GoogleMapsInteractionService initialized")
     }
     
+    
+    // Fetch nearby stores within 1000m radius of given coordinates
     public func fetchNearbyStores(latitude: Double, longitude: Double) async throws -> [GMSPlace] {
         return try await withCheckedThrowingContinuation { continuation in
             logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
             
+            
+            // Set up search area with 1km radius
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let searchArea = GMSPlaceCircularLocationOption(coordinate, 1000)
             
+            
+            // Define place properties to fetch
             let placeProperties = [
                 GMSPlaceProperty.name,
                 GMSPlaceProperty.coordinate,
@@ -53,6 +63,9 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.servesDinner
             ].map { $0.rawValue }
             
+            
+            
+            // Configure search request, setting it up 
             let request = GMSPlaceSearchNearbyRequest(locationRestriction: searchArea, placeProperties: placeProperties)
             let includedTypes = ["restaurant", "cafe"]
             request.includedTypes = includedTypes

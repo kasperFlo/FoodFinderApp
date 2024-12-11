@@ -7,10 +7,20 @@
 import SwiftUI
 import GooglePlaces
 
+// This is where the overall functionality of the app occurs or the visuals atleast
+// location based filter
+// food type based filter
+
 struct StoreListView: View {
+    
+    // this containes the restaurants from google Places API
     let stores: [GMSPlace]
+    
+    // this stateObject property is used to track the user's location
     @StateObject private var locationService = LocationService()
     
+    // selected Distance is used to filter the distance between the distance fromt he restaurant and the users
+    // the other states are used to update whats populating ot the user based off what they select
     @State private var selectedDistance: Double = 5
     @State private var showServesBeerOnly: Bool = false
     @State private var showVegetarianOnly: Bool = false
@@ -20,7 +30,8 @@ struct StoreListView: View {
     @State private var showDinnerOnly: Bool = false
     
     
-    
+    // returns the restaurants that are filtyered based off the users preference
+    // uses the stores of type GMSPlace to populate the view
     var filteredStores: [GMSPlace] {
         stores.filter { store -> Bool in
             guard let userLocation = locationService.currentLocation else { return false }
@@ -40,6 +51,7 @@ struct StoreListView: View {
         }
     }
     
+    // a way to make the buttons look better
     struct FilterButton: View {
         let title: String
         let icon: String  // SF Symbol name
@@ -116,9 +128,10 @@ struct StoreListView: View {
                 UISegmentedControl.appearance().backgroundColor = UIColor.systemGray6
             }
             
-            // Filter Buttons
+            // Filter Buttons based off the filters seletced by the user
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
+                    // uses the button markup made earlier and passes the specific category we are filtering by
                     FilterButton(title: "Serves Beer", icon: "mug.fill", isSelected: $showServesBeerOnly)
                     FilterButton(title: "Vegetarian", icon: "leaf.fill", isSelected: $showVegetarianOnly)
                     FilterButton(title: "Takeout", icon: "bag.fill", isSelected: $showTakeoutOnly)
@@ -130,7 +143,8 @@ struct StoreListView: View {
             }
             .padding(.vertical, 8)
             
-            // Restaurant List
+            // Restaurant List using the filteres version of what the user seletcs to populate the view
+            // the store object itself is passed through a navigationLink so we can get more details about the restaurant itself
             ScrollView {
                 VStack(spacing: 16) {
                     ForEach(filteredStores, id: \.self) { store in
@@ -152,7 +166,7 @@ struct StoreListView: View {
     }
 }
 
-// Add this LocationManager class if you don't have one
+// Add this LocationManager class, it allows the vies to have access to use the user's location for diatnce calculations and allow us to do filtering neabry restaurants
 class LocationManager: NSObject, ObservableObject {
     static let shared = LocationManager()
     @Published var userLocation: CLLocationCoordinate2D?

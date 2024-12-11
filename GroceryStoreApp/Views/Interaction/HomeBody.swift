@@ -8,27 +8,41 @@ import SwiftUI
 import GooglePlaces
 
 struct HomeBody: View {
+    
+    // StateObject to manage store list data and maintain state across view updates
     @StateObject private var StoreVM : StoreListViewModel = StoreListViewModel.shared
     
     
+    // Main view structure for displaying store listings
     var body: some View {
         
             VStack {
+                
+                // Switch statement to handle different states of the view
                 switch (StoreVM.isLoading, StoreVM.locationError, StoreVM.locationService.currentLocation, StoreVM.storesError) {
+                    
+                    // Loading state
                 case (true, _, _, _):
                     ProgressView("Fetching location and stores...")
                     
+                    
+                    // Location error state
                 case (_, let locationError?, _, _):
                     ErrorView(error: locationError, retryAction: StoreVM.retryFetchLocation)
                     
+                    // Location found but stores error state
                 case (_, _, let location?, let storesError?):
                     LocationView(location: location)
                     ErrorView(error: storesError, retryAction: { Task { await StoreVM.fetchNearbyStores() } })
                     
+                    
+                    // Success state - location found and stores available
                 case (_, _, let location?, _):
                     LocationView(location: location)
                     StoreListView(stores: StoreVM.stores)
                     
+                    
+                    // Initial state - no location data
                 case (false, nil, nil, _):
                     NoLocationView(fetchAction: StoreVM.fetchLocation)
                 }
@@ -56,56 +70,9 @@ struct LocationView: View {
         }
 }
 
-//struct StoreListContent: View {
-//    let stores: [GMSPlace]
-//
-//    var body: some View {
-//        List(stores, id: \.self) { store in
-//            VStack(alignment: .leading, spacing: 8) {
-//                Text(store.name ?? "Unknown Store")
-//                    .font(.headline)
-//                    .foregroundColor(.primary)
-//                
-//                if let address = store.formattedAddress {
-//                    Text(address)
-//                        .font(.subheadline)
-//                        .foregroundColor(.secondary)
-//                }
-//                            
-//                HStack {
-//                    Image(systemName: "star.fill")
-//                        .foregroundColor(.yellow)
-//                    Text(String(format: "%.1f", store.rating))
-//                        .font(.subheadline)
-//                }
-//            
-//            
-////                Text(String(repeating: "$", count: (store.priceLevel).rawValue ))
-////                    .font(.caption)
-////                    .foregroundColor(.green)
-//                
-//                
-//                if let phoneNumber = store.phoneNumber {
-//                    HStack {
-//                        Image(systemName: "phone.fill")
-//                        Text(phoneNumber)
-//                            .font(.caption)
-//                    }
-//                    .foregroundColor(.blue)
-//                }
-//                
-//                if let website = store.website {
-//                    Text(website.absoluteString)
-//                        .font(.caption)
-//                        .foregroundColor(.blue)
-//                        .lineLimit(1)
-//                }
-//            }
-//            .padding(.vertical, 4)
-//        }
-//    }
-//}
 
+
+// Error view for displaying errors with retry option
 struct ErrorView: View {
     let error: Error
     let retryAction: () -> Void
@@ -125,6 +92,7 @@ struct ErrorView: View {
     }
 }
 
+// View shown when no location data is available
 struct NoLocationView: View {
     let fetchAction: () -> Void
     
