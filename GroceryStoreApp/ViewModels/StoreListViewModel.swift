@@ -21,7 +21,7 @@ class StoreListViewModel: ObservableObject {
     @Published var locationError: Error?
     @Published var isLoading = false
     
-    private init(locationService: LocationService = LocationService() , googleMapsService : GoogleMapsInteractionService = GoogleMapsInteractionService()) {
+    private init(locationService: LocationService = LocationService() , googleMapsService : GoogleMapsInteractionService = GoogleMapsInteractionService.shared) {
         self.locationService = locationService
         self.googleMapsService = googleMapsService
         
