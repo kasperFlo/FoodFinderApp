@@ -24,7 +24,6 @@ class FavoritesViewModel: ObservableObject {
     @Published var favoriteStores: [GMSPlace] = []
     @Published public var favorites: [FavoritePlace] = []
     
-    
     private init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.viewContext = context
         self.placesClient = GoogleMapsInteractionService.shared
@@ -57,7 +56,6 @@ class FavoritesViewModel: ObservableObject {
     }
     func fetchFavorites() {
         let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
-        
         do {
             favorites = try viewContext.fetch(request)
         } catch {
@@ -78,6 +76,7 @@ class FavoritesViewModel: ObservableObject {
     
     func toggleFavorite(_ place: GMSPlace) {
         print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(place.placeID)")
+    
         if isFavorite(place) {
             print("Removing from favorites")
             removeFavorite(place)
@@ -86,17 +85,29 @@ class FavoritesViewModel: ObservableObject {
             addFavorite(place)
         }
         
-        Task { await syncFavoriteStores() }
+        objectWillChange.send()
+        Task {
+            await syncFavoriteStores()
+            // Force another UI update after sync
+            await MainActor.run {
+                objectWillChange.send()
+            }
+        }
     }
     func isFavorite(_ place: GMSPlace) -> Bool {
-        
-        return favorites.contains { favorite in
-            guard let favoritePlaceID = favorite.placeID else { return false }
-            return favoritePlaceID == place.placeID
+        // Check if the specific placeID exists in favorites
+        guard let placeID = place.placeID else { return false }
+        return favoriteStores.contains { store in
+            store.placeID == placeID
         }
-        
     }
     func addFavorite(_ place: GMSPlace)  {
+        // Check if place already exists in favorites
+        if favorites.contains(where: { $0.placeID == place.placeID }) {
+            print("Place already in favorites: \(place.name ?? "unknown")")
+            return
+        }
+        
         let favorite = FavoritePlace(context: viewContext)
         favorite.placeID = place.placeID
         favorite.latitude = place.coordinate.latitude

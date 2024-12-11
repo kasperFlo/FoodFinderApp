@@ -25,14 +25,14 @@ public class GoogleMapsInteractionService : ObservableObject{
     // Initialize the service with shared Places client
     public init() {
         self.placesClient = GMSPlacesClient.shared()
-        logger.info("GoogleMapsInteractionService initialized")
+//        logger.info("GoogleMapsInteractionService initialized")
     }
     
     
     // Fetch nearby stores within 1000m radius of given coordinates
     public func fetchNearbyStores(latitude: Double, longitude: Double, range : Double = 5) async throws -> [GMSPlace] {
         return try await withCheckedThrowingContinuation { continuation in
-            logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
+//            logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
             
             // Set up search area with 1km radius
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -66,7 +66,7 @@ public class GoogleMapsInteractionService : ObservableObject{
             let includedTypes = ["restaurant", "cafe"]
             request.includedTypes = includedTypes
             
-            logger.debug("Search request configured with \(includedTypes.count) included types")
+//            logger.debug("Search request configured with \(includedTypes.count) included types")
             
             let callback: GMSPlaceSearchNearbyResultCallback = { [weak self] results, error in
                 guard let self = self else {
