@@ -10,28 +10,47 @@ import SwiftUI
 struct MainTabView: View {
 
     var body: some View {
+        
+        // Wraps the TabView in a NavigationView for navigation capabilities
         NavigationView {
+            
+            // Creates a tab-based interface with two tabs
             TabView {
+                
+                // First tab showing the main food spots screen
                 HomeBody()
                     .tabItem {
-                        Label("Home", systemImage: "house.fill")
+                        Label("Food Spots", systemImage: "fork.knife")
                     }
                 
+                // Second tab showing favorites screen
                 FavoritesView()
                     .tabItem {
                         Label("Favorites", systemImage: "heart.fill")
                     }
             }
-            .accentColor(.green)
+            .tint(.blue)
             .onAppear {
-                // Set background color for tab bar
+                
+                // Configures how tab items look
                 let appearance = UITabBarAppearance()
                 appearance.backgroundColor = .white
-                UITabBar.appearance().scrollEdgeAppearance = appearance
+                
+                // Configure tab bar items appearance
+                let itemAppearance = UITabBarItemAppearance()
+                itemAppearance.normal.iconColor = .gray
+                itemAppearance.selected.iconColor = .systemBlue
+                appearance.stackedLayoutAppearance = itemAppearance
+                
+                // Add subtle shadow
+                appearance.shadowColor = .gray.withAlphaComponent(0.2)
+                
                 UITabBar.appearance().standardAppearance = appearance
+                UITabBar.appearance().scrollEdgeAppearance = appearance
             }
         }
     }
+
 }
 
 //#Preview {

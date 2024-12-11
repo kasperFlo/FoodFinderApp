@@ -11,13 +11,14 @@ import GooglePlaces
 @main
 struct ResturantApp: App {
     
+    // Initialize Google Places when app launches
     init() {
         GMSPlacesClient.provideAPIKey(Secret)
     }
     
     var body: some Scene {
         WindowGroup {
-            MainTabView()
+            MainTabView() // Set MainTabView as the root view
         }
     }
     

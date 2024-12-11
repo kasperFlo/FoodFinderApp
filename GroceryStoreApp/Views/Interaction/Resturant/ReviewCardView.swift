@@ -9,11 +9,15 @@ import SwiftUI
 import GooglePlaces
 
 struct ReviewCardView: View {
+    
+    // data of the customer reviews from the restaurants
     let review: GMSPlaceReview
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
+                
+                // displaying the image of the user giving the review
                 if let photoURL = review.authorAttribution?.photoURI {
                     AsyncImage(url: photoURL) { image in
                         image
@@ -27,18 +31,23 @@ struct ReviewCardView: View {
                             .foregroundColor(.gray)
                     }
                 } else {
+                    
+                    // if we cant get that image we display a grey screen
                     Image(systemName: "person.circle.fill")
                         .resizable()
                         .frame(width: 40, height: 40)
                         .foregroundColor(.gray)
                 }
                 
+                // displaying the review rating itself
                 VStack(alignment: .leading) {
                     Text(review.authorAttribution?.name ?? "Anon")
                         .fontWeight(.medium)
                     RatingView(rating: Int(review.rating))
                 }
             }
+            
+            // what the reviewer had to say about their experience
             Text(review.text ?? "No review text")
                 .foregroundColor(.gray)
         }
@@ -51,6 +60,7 @@ struct ReviewCardView: View {
 struct RatingView: View {
     let rating: Int
     
+    // displaying the stars for the user for the rating they gave the place out of 5 stars
     var body: some View {
         HStack {
             ForEach(0..<5, id: \.self) { index in

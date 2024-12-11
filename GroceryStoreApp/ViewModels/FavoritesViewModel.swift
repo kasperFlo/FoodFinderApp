@@ -8,12 +8,19 @@
 import GooglePlaces
 import CoreData
 
+// stores favorite in memory
+// this handles adding / removing favorites
+// checks the status of if user liked a restaurant
+
 @MainActor
 class FavoritesViewModel: ObservableObject {
+    
+    // signleton instance for app-wide access to favorites
     static let shared = FavoritesViewModel()
     private let viewContext: NSManagedObjectContext
     private let placesClient: GoogleMapsInteractionService
     
+    // this property is used to notify views of changes to favorites list
     @Published var favoriteStores: [GMSPlace] = []
     @Published public var favorites: [FavoritePlace] = []
     
@@ -97,3 +104,5 @@ class FavoritesViewModel: ObservableObject {
     }
     
 }
+
+

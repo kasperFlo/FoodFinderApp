@@ -51,7 +51,7 @@ class StoreListViewModel: ObservableObject {
         locationService.startUpdatingLocation()
     
         Task {
-//            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+//            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds sum
             if locationService.currentLocation == nil {
                 locationError = NSError(domain: "LocationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get location"])
             }
