@@ -24,13 +24,13 @@ class StoreListViewModel: ObservableObject {
     @Published var locationError: Error?
     @Published var isLoading = false
     
-    @Published var selectedDistance: Double = 5
-    @Published var showServesBeerOnly: Bool = false
-    @Published var showVegetarianOnly: Bool = false
-    @Published var showTakeoutOnly: Bool = false
-    @Published var showBreakfastOnly: Bool = false
-    @Published var showLunchOnly: Bool = false
-    @Published var showDinnerOnly: Bool = false
+    @Published var selectedDistance: Double = 5 { didSet { updateFilteredList() } }
+    @Published var showServesBeerOnly: Bool = false { didSet { updateFilteredList() } }
+    @Published var showVegetarianOnly: Bool = false { didSet { updateFilteredList() } }
+    @Published var showTakeoutOnly: Bool = false { didSet { updateFilteredList() } }
+    @Published var showBreakfastOnly: Bool = false { didSet { updateFilteredList() } }
+    @Published var showLunchOnly: Bool = false { didSet { updateFilteredList() } }
+    @Published var showDinnerOnly: Bool = false { didSet { updateFilteredList() } }
     
     var presetLocations = [
         Coordinate(longitude: 0, latitude: 0,name: "Current Location" ), // Toronto
