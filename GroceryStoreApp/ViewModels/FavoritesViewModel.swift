@@ -30,7 +30,7 @@ class FavoritesViewModel: ObservableObject {
         
         Task { await startUpPull() }
     }
-    
+
     func startUpPull() async {
         print("Starting Pull From Core Data")
         
@@ -43,7 +43,6 @@ class FavoritesViewModel: ObservableObject {
         }
         
         var tempStores: [GMSPlace] = []
-        
         for favorite in localFavoritesInfo {
             do {
                 // Fetch nearby places using stored coordinates
@@ -61,33 +60,46 @@ class FavoritesViewModel: ObservableObject {
                 print("Error fetching place: \(error)")
             }
         }
-        self.favoriteStores = tempStores
-        printCurrentPlaces()
-        
+         self.favoriteStores = tempStores
+//        printCurrentPlaces()
         print("Ending Pull From Core Data")
     }
     func pushToCore() {
-        // Clear existing Core Data entries
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoritePlace")
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        
-        do {
-            try viewContext.execute(batchDeleteRequest)
-            
-            // Add each local favorite to Core Data
-            for store in favoriteStores {
-                let favorite = FavoritePlace(context: viewContext)
-                favorite.placeID = store.placeID
-                favorite.latitude = store.coordinate.latitude
-                favorite.longitude = store.coordinate.longitude
+        viewContext.performAndWait {
+            do {
+                // Clear existing Core Data entries
+                let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoritePlace")
+                let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                try viewContext.execute(batchDeleteRequest)
+                
+                // Reset context after batch delete
+                try viewContext.reset()
+                
+                // Add each local favorite to Core Data
+                for store in favoriteStores {
+                    let favorite = FavoritePlace(context: viewContext)
+                    favorite.placeID = store.placeID
+                    favorite.latitude = store.coordinate.latitude
+                    favorite.longitude = store.coordinate.longitude
+                }
+                
+                // Check for changes before saving
+                if viewContext.hasChanges {
+                    try viewContext.save()
+                    
+                    // Refresh local array after save
+                    let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
+                    localFavoritesInfo = try viewContext.fetch(request)
+                }
+                printCurrentPlaces()
+            } catch {
+                // Rollback on error
+                viewContext.rollback()
+                print("Error saving to Core Data: \(error)")
             }
-            // Save context
-            try viewContext.save()
-        } catch {
-            print("Error saving to Core Data: \(error)")
         }
     }
-    
+
     // local managing functions
     func toggleFavorite(_ place: GMSPlace) {
         print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(String(describing: place.placeID))")

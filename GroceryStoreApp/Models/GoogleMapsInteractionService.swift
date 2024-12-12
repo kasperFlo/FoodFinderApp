@@ -29,7 +29,7 @@ public class GoogleMapsInteractionService : ObservableObject{
     }
     
     
-    // Fetch nearby stores within 1000m radius of given coordinates
+    // Fetch nearby stores within given range of coordinates
     public func fetchNearbyStores(latitude: Double, longitude: Double, range : Double = 5) async throws -> [GMSPlace] {
         return try await withCheckedThrowingContinuation { continuation in
 //            logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
@@ -95,7 +95,7 @@ public class GoogleMapsInteractionService : ObservableObject{
                 
                 
                 // testing given data
-//                print("Successfully fetched \(results.count) nearby stores")
+                print("Successfully fetched \(results.count) nearby stores")
 //                results.forEach { place in
 //                    if let photos = place.photos {
 //                        photos.forEach { photoMetadata in

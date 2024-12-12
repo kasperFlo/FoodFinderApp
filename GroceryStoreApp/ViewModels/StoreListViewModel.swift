@@ -29,23 +29,27 @@ class StoreListViewModel: ObservableObject {
     }
     
     func fetchNearbyStores() async {
+        
         guard let location = locationService.currentLocation else {
             storesError = NSError(domain: "StoreError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No location available"])
             return }
         
         isLoading = true
         do {
+            print("-- Fetching Main Page --")
             stores = try await googleMapsService.fetchNearbyStores(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude,
                 range: 1000
             )
             storesError = nil
+            print("-- Done Fetching Main Page --")
         } catch {
             storesError = error
             stores = []
         }
         isLoading = false
+        
     }
     
     func fetchLocation() {
@@ -54,7 +58,7 @@ class StoreListViewModel: ObservableObject {
         locationService.startUpdatingLocation()
     
         Task {
-//            try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds sum
+            try? await Task.sleep(nanoseconds: 2_000_000_000) // 5 seconds simulated wait
             if locationService.currentLocation == nil {
                 locationError = NSError(domain: "LocationError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to get location"])
             }
