@@ -22,7 +22,10 @@ struct MainTabView: View {
                     .tabItem {
                         Label("Food Spots", systemImage: "fork.knife")
                     }
-                
+                MultiChatView()
+                    .tabItem {
+                        Label("ChatBot", systemImage: "bubble.left.and.bubble.right")
+                    }
                 // Second tab showing favorites screen
                 FavoritesView()
                     .tabItem {

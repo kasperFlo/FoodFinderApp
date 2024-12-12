@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04864E542D0A539C00A3463A /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 04864E532D0A539C00A3463A /* GoogleGenerativeAI */; };
 		175594C02D0287E000A9B148 /* GooglePlaces in Frameworks */ = {isa = PBXBuildFile; productRef = 175594BF2D0287E000A9B148 /* GooglePlaces */; };
 		175594C22D0287E000A9B148 /* GooglePlacesSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 175594C12D0287E000A9B148 /* GooglePlacesSwift */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04864E542D0A539C00A3463A /* GoogleGenerativeAI in Frameworks */,
 				175594C02D0287E000A9B148 /* GooglePlaces in Frameworks */,
 				175594C22D0287E000A9B148 /* GooglePlacesSwift in Frameworks */,
 			);
@@ -87,6 +89,7 @@
 			packageProductDependencies = (
 				175594BF2D0287E000A9B148 /* GooglePlaces */,
 				175594C12D0287E000A9B148 /* GooglePlacesSwift */,
+				04864E532D0A539C00A3463A /* GoogleGenerativeAI */,
 			);
 			productName = GroceryStoreApp;
 			productReference = 17DCC4952CB8B605006D4FCA /* GroceryStoreApp.app */;
@@ -119,6 +122,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */,
+				04864E522D0A539C00A3463A /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17DCC4962CB8B605006D4FCA /* Products */;
@@ -363,6 +367,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		04864E522D0A539C00A3463A /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google-gemini/generative-ai-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
 		175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/googlemaps/ios-places-sdk";
@@ -374,6 +386,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		04864E532D0A539C00A3463A /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04864E522D0A539C00A3463A /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
 		175594BF2D0287E000A9B148 /* GooglePlaces */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 175594BE2D0287E000A9B148 /* XCRemoteSwiftPackageReference "ios-places-sdk" */;
