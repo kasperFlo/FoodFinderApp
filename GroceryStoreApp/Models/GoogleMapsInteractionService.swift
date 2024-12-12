@@ -95,7 +95,7 @@ public class GoogleMapsInteractionService : ObservableObject{
                 
                 
                 // testing given data
-                print("Successfully fetched \(results.count) nearby stores")
+//                print("Successfully fetched \(results.count) nearby stores")
 //                results.forEach { place in
 //                    if let photos = place.photos {
 //                        photos.forEach { photoMetadata in

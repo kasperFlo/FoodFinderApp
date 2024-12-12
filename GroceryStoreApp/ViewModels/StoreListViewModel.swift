@@ -36,14 +36,14 @@ class StoreListViewModel: ObservableObject {
         
         isLoading = true
         do {
-            print("-- Fetching Main Page --")
+//            print("-- Fetching Main Page --")
             stores = try await googleMapsService.fetchNearbyStores(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude,
                 range: 1000
             )
             storesError = nil
-            print("-- Done Fetching Main Page --")
+//            print("-- Done Fetching Main Page --")
         } catch {
             storesError = error
             stores = []

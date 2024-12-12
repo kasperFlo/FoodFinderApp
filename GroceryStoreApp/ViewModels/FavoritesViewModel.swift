@@ -27,43 +27,56 @@ class FavoritesViewModel: ObservableObject {
     private init(context: NSManagedObjectContext = PersistenceController.shared.container.viewContext) {
         self.viewContext = context
         self.placesClient = GoogleMapsInteractionService.shared
-        
-        Task { await startUpPull() }
+        viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        Task { await startUpPull()
+            print("Startup pull completed")}
     }
 
+    @MainActor
     func startUpPull() async {
         print("Starting Pull From Core Data")
         
-        let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
-        do {
-            localFavoritesInfo = try viewContext.fetch(request)
-        } catch {
-            print("Error fetching local favorites: \(error)")
-            localFavoritesInfo = []
+        // Perform Core Data fetch in performAndWait block
+        viewContext.performAndWait {
+            do {
+                let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
+                localFavoritesInfo = try viewContext.fetch(request)
+                print("Fetched \(localFavoritesInfo.count) favorites from Core Data")
+                printCurrentPlaces()
+            } catch {
+                print("Error fetching local favorites: \(error)")
+                localFavoritesInfo = []
+            }
         }
         
         var tempStores: [GMSPlace] = []
         for favorite in localFavoritesInfo {
             do {
-                // Fetch nearby places using stored coordinates
                 let nearbyPlaces = try await placesClient.fetchNearbyStores(
                     latitude: favorite.latitude,
                     longitude: favorite.longitude,
-                    range: 1
+                    range: 5
                 )
                 
-                // Find matching place by ID
                 if let matchingPlace = nearbyPlaces.first(where: { $0.placeID == favorite.placeID }) {
                     tempStores.append(matchingPlace)
+                    print("Found matching place: \(matchingPlace.name ?? "")")
+                } else {
+                    print("Error fetching place: \(favorite.placeID ?? "")")
                 }
             } catch {
                 print("Error fetching place: \(error)")
             }
+            
         }
-         self.favoriteStores = tempStores
-//        printCurrentPlaces()
-        print("Ending Pull From Core Data")
+        
+        // Update on main actor
+        await MainActor.run {
+            self.favoriteStores = tempStores
+            print("Updated favoriteStores with \(tempStores.count) places")
+        }
     }
+
     func pushToCore() {
         viewContext.performAndWait {
             do {
@@ -90,7 +103,11 @@ class FavoritesViewModel: ObservableObject {
                     // Refresh local array after save
                     let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
                     localFavoritesInfo = try viewContext.fetch(request)
+                    
+                    // Force UI update
+                    objectWillChange.send()
                 }
+                print("--Pushed TO Core--")
                 printCurrentPlaces()
             } catch {
                 // Rollback on error
@@ -104,11 +121,16 @@ class FavoritesViewModel: ObservableObject {
     func toggleFavorite(_ place: GMSPlace) {
         print("Toggling favorite for place: \(place.name ?? "unknown"), ID: \(String(describing: place.placeID))")
         if isFavorite(place) {
-            removeFavorite(place) ; print("Removing from favorites")
+            removeFavorite(place) ; print("Removing \(place.name ?? "unknown") from favorites")
+            pushToCore()
         } else {
-            addFavorite(place) ; print("Adding to favorites")
+            addFavorite(place) ; print("Adding \(place.name ?? "unknown") to favorites ")
+            pushToCore()
         }
+        
+        objectWillChange.send()
         pushToCore()
+        printCurrentPlaces()
     }
     func isFavorite(_ place: GMSPlace) -> Bool {
         // Check if the specific placeID exists in favorites
@@ -137,6 +159,14 @@ class FavoritesViewModel: ObservableObject {
             }
         }
         print("---- End Current Resturants in GMSplace-----")
+        
+        print("---- Current Resturants in CORE-----")
+        localFavoritesInfo.forEach { local in
+            if let id = local.placeID {
+                print("ID: \(id)")
+            }
+        }
+        print("---- End Current Resturants in CORE-----")
     }
     
 }
