@@ -78,7 +78,7 @@ The purpose of this app is to simplify the process of discovering restaurants, s
 **Florian:**
 *   **Backend Development:**
     *   Developed the GoogleMapsInteractionService, handling backend interaction with the Google Places API for fetching nearby stores based on current *or* user-chosen location, along with backend support for loading store photos.
-    *   Developed backend ViewModels for favorites and store lists.
+    *   Developed backend ViewModels for favourites and store lists.
     *   Implemented core data persistence, utilizing a specialized nearby search based on Place ID and latitude/longitude to retrieve and store data, avoiding redundant API calls for populating the local store list.
     *   Refactored backend favouriting logic to integrate with core data, including a significant rework of the initial implementation.
     *   Implemented active geolocation tracking *and* refactored filtering functionalities from view to ViewModel.
