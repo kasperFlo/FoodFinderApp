@@ -89,12 +89,6 @@ The purpose of this app is to simplify the process of discovering restaurants, s
     *   Refactored frontend filters in the store list view to use the ViewModel. (Addresses "Geolocation and filtering functionalities")
 
 **Suthakaran:**
-- User interface design implementation based on Figma.
-- Restaurant card layout and detailed views.
-- Development of the Favorites View.
-- Gemini feature integration for answering general questions.
-
-**Suthakaran:**
 
 *   **Frontend Development:**
     *   Created UI Components / Interface based on Figma designs (cards, store detail view with interactive elements, list view with infinite scrolling, and a responsive nav bar). 
