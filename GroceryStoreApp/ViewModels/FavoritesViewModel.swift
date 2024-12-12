@@ -29,11 +29,11 @@ class FavoritesViewModel: ObservableObject {
         self.placesClient = GoogleMapsInteractionService.shared
         viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         Task { await startUpPull()
-            print("** Startup pull completed **")}
+            print("** Startup pull COMPLETED **")}
     }
 
     func startUpPull() async {
-        // Perform Core Data fetch in performAndWait block
+        print("** Startup pull STARTING **")
         viewContext.performAndWait {
             do {
                 let request = NSFetchRequest<FavoritePlace>(entityName: "FavoritePlace")
@@ -57,9 +57,9 @@ class FavoritesViewModel: ObservableObject {
                 
                 if let matchingPlace = nearbyPlaces.first(where: { $0.placeID == favorite.placeID }) {
                     tempStores.append(matchingPlace)
-                    print("Found matching place: \(matchingPlace.name ?? "")")
+                    print("Found matching GMSplace: \(matchingPlace.name ?? "")")
                 } else {
-                    print("Error fetching place: \(favorite.placeID ?? "")")
+                    print("Error matching GMSplace: \(favorite.placeID ?? "")")
                 }
             } catch {
                 print("Error fetching place: \(error)")

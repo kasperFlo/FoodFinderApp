@@ -26,7 +26,6 @@ struct RestaurantCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
             // Restaurant Image of what the restaurant looks like
             Group {
                 if let image = placeImage {
