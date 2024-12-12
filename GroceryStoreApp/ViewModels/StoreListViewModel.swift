@@ -29,27 +29,22 @@ class StoreListViewModel: ObservableObject {
     }
     
     func fetchNearbyStores() async {
-        
         guard let location = locationService.currentLocation else {
             storesError = NSError(domain: "StoreError", code: 0, userInfo: [NSLocalizedDescriptionKey: "No location available"])
             return }
-        
         isLoading = true
         do {
-//            print("-- Fetching Main Page --")
             stores = try await googleMapsService.fetchNearbyStores(
                 latitude: location.coordinate.latitude,
                 longitude: location.coordinate.longitude,
                 range: 1000
             )
             storesError = nil
-//            print("-- Done Fetching Main Page --")
         } catch {
             storesError = error
             stores = []
         }
         isLoading = false
-        
     }
     
     func fetchLocation() {
