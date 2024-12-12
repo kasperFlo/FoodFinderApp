@@ -76,16 +76,35 @@ The purpose of this app is to simplify the process of discovering restaurants, s
 ### Members:
 
 **Florian:**
-- Geolocation and filtering functionalities.
-- Integration of Google Places API.
-- Personalized location services.
-- Core Data setup for saving and managing favorites.
+*   **Backend Development:**
+    *   Developed the GoogleMapsInteractionService, handling backend interaction with the Google Places API for fetching nearby stores based on current location or user-chosen location along with a backend for loading store photos.
+    *   Developed backend ViewModels for favourites and store lists.
+    *   Implemented core data persistence, utilizing a specialized nearby search based on Place ID and latitude/longitude to retrieve and store data, avoiding redundant API efficient calls for populating the local store list. 
+    *   Refactored backend favouriting logic to integrate with core data, including a significant rework of the initial implementation.
+    *   Implemented active geolocation tracking and refactored filtering functionalities from view to ViewModel
+
+*   **Frontend Development:**
+    *   Implemented HomePage and basic navigation routing.
+    *   Implemented photo handling and display on UI.
+    *   Refactored frontend filters in the store list view to use the ViewModel. (Addresses "Geolocation and filtering functionalities")
 
 **Suthakaran:**
 - User interface design implementation based on Figma.
 - Restaurant card layout and detailed views.
 - Development of the Favorites View.
 - Gemini feature integration for answering general questions.
+
+**Suthakaran:**
+
+*   **Frontend Development:**
+    *   Created UI Components / Interface based on Figma designs (cards, store detail view with interactive elements, list view with infinite scrolling, and a responsive nav bar). 
+    *   Developed the AI chat page with an interactive message display enabling specific conversations. 
+    *   Implemented initial frontend favouriting logic and UI for the store list and favourites view pages. 
+    *   Implemented initial search filters on the storeListView.
+*   **Other:**
+    *   Authored project documentation (README).
+
+
 
 ---
 
