@@ -25,11 +25,11 @@ public class GoogleMapsInteractionService : ObservableObject{
     // Initialize the service with shared Places client
     public init() {
         self.placesClient = GMSPlacesClient.shared()
-        logger.info("GoogleMapsInteractionService initialized")
+//        logger.info("GoogleMapsInteractionService initialized")
     }
     
     
-    // Fetch nearby stores within 1000m radius of given coordinates
+    // Fetch nearby stores within given range of coordinates
     public func fetchNearbyStores(latitude: Double, longitude: Double, range : Double = 5) async throws -> [GMSPlace] {
         return try await withCheckedThrowingContinuation { continuation in
             logger.info("Fetching nearby stores for coordinates: \(latitude), \(longitude)")
@@ -43,6 +43,7 @@ public class GoogleMapsInteractionService : ObservableObject{
                 GMSPlaceProperty.name,
                 GMSPlaceProperty.coordinate,
                 GMSPlaceProperty.rating,
+                GMSPlaceProperty.placeID,
                 GMSPlaceProperty.reviews,
                 GMSPlaceProperty.priceLevel,
                 GMSPlaceProperty.formattedAddress,
@@ -66,7 +67,7 @@ public class GoogleMapsInteractionService : ObservableObject{
             let includedTypes = ["restaurant", "cafe"]
             request.includedTypes = includedTypes
             
-            logger.debug("Search request configured with \(includedTypes.count) included types")
+//            logger.debug("Search request configured with \(includedTypes.count) included types")
             
             let callback: GMSPlaceSearchNearbyResultCallback = { [weak self] results, error in
                 guard let self = self else {
@@ -90,11 +91,11 @@ public class GoogleMapsInteractionService : ObservableObject{
                     return
                 }
                 
-                print("Successfully fetched \(results.count) nearby stores")
+
                 
                 
                 // testing given data
-                
+                print("Successfully fetched \(results.count) nearby stores")
 //                results.forEach { place in
 //                    if let photos = place.photos {
 //                        photos.forEach { photoMetadata in

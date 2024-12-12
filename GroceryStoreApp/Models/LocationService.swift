@@ -7,6 +7,7 @@
 
 import Combine
 import CoreLocation
+import SwiftUICore
 
 class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
     // Properties
@@ -40,7 +41,7 @@ class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 // Delegate CLLocationManagerDelegate error
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location error: \(error.localizedDescription)")
+//        print("Location error: \(error.localizedDescription)")
     }
     
     

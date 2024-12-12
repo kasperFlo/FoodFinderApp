@@ -16,7 +16,7 @@ struct RestaurantCard: View {
     let store: GMSPlace
     
     // this is a call for the viewmodel, it manages favorites state
-    @ObservedObject var favoritesViewModel: FavoritesViewModel = FavoritesViewModel.shared
+    @StateObject var favoritesViewModel: FavoritesViewModel = FavoritesViewModel.shared
     
     // this handles the google places API interaction
     @ObservedObject var placesClient: GoogleMapsInteractionService = GoogleMapsInteractionService.shared
@@ -26,7 +26,6 @@ struct RestaurantCard: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            
             // Restaurant Image of what the restaurant looks like
             Group {
                 if let image = placeImage {

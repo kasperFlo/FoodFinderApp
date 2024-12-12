@@ -15,9 +15,7 @@ struct HomeBody: View {
     
     // Main view structure for displaying store listings
     var body: some View {
-        
             VStack {
-                
                 // Switch statement to handle different states of the view
                 switch (StoreVM.isLoading, StoreVM.locationError, StoreVM.locationService.currentLocation, StoreVM.storesError) {
                     
@@ -39,7 +37,7 @@ struct HomeBody: View {
                     // Success state - location found and stores available
                 case (_, _, let location?, _):
                     LocationView(location: location)
-                    StoreListView(stores: StoreVM.stores)
+                    StoreListView()
                     
                     
                     // Initial state - no location data
@@ -50,7 +48,6 @@ struct HomeBody: View {
             .onAppear {
                 Task {
                     await StoreVM.fetchNearbyStores()
-                
             }
         }
     }
@@ -58,10 +55,6 @@ struct HomeBody: View {
 
 struct LocationView: View {
     let location: CLLocation
-    
-//    var body: some View {
-//        Text("Current Location: \(location.coordinate.latitude), \(location.coordinate.longitude)")
-//    }
     var body: some View {
             // Either remove Text entirely or replace with something more useful
             Text(".")
