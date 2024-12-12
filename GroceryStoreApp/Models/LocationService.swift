@@ -7,6 +7,7 @@
 
 import Combine
 import CoreLocation
+import SwiftUICore
 
 class LocationService: NSObject, ObservableObject, CLLocationManagerDelegate {
     // Properties
