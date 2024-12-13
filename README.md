@@ -1,4 +1,4 @@
-# GroceryStoreApp
+# FoodFinderApp
 
 Our app uses geolocation services to connect users with a wide range of restaurants, allowing them to discover and explore dining options with ease. Users can search for restaurants based on their current location or a desired location, filter results by cuisine or distance, and view detailed information about each restaurant. The app provides a convenient and efficient way to find and save restaurants, catering to food enthusiasts, travelers, and anyone looking for a personalized dining experience. Additionally, the app offers meal suggestions and answers general inquiries through the Gemini feature, making it a versatile tool for decision-making.
 
@@ -76,16 +76,27 @@ The purpose of this app is to simplify the process of discovering restaurants, s
 ### Members:
 
 **Florian:**
-- Geolocation and filtering functionalities.
-- Integration of Google Places API.
-- Personalized location services.
-- Core Data setup for saving and managing favorites.
+*   **Backend Development:**
+    *   Developed the GoogleMapsInteractionService, handling backend interaction with the Google Places API for fetching nearby stores based on current *or* user-chosen location, along with backend support for loading store photos.
+    *   Developed backend ViewModels for favourites and store lists.
+    *   Implemented core data persistence, utilizing a specialized nearby search based on Place ID and latitude/longitude to retrieve and store data, avoiding redundant API calls for populating the local store list.
+    *   Refactored backend favouriting logic to integrate with core data, including a significant rework of the initial implementation.
+    *   Implemented active geolocation tracking *and* refactored filtering functionalities from view to ViewModel.
+
+*   **Frontend Development:**
+    *   Implemented HomePage and basic navigation routing.
+    *   Implemented photo handling and display on UI.
+    *   Refactored frontend filters in the store list view to use the ViewModel.
 
 **Suthakaran:**
-- User interface design implementation based on Figma.
-- Restaurant card layout and detailed views.
-- Development of the Favorites View.
-- Gemini feature integration for answering general questions.
+
+*   **Frontend Development:**
+    *   Created UI components and interface based on Figma designs (cards, store detail view with interactive elements, list view with infinite scrolling, and a responsive nav bar).
+    *   Developed the AI chat page with an interactive message display enabling specific conversations.
+    *   Implemented initial frontend favouriting logic and UI for the store list and favourites view pages. 
+    *   Implemented initial search filters on the storeListView.
+*   **Other:**
+    *   Authored project documentation (README).
 
 ---
 
