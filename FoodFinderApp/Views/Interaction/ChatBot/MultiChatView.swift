@@ -109,17 +109,27 @@ struct MultiChatView: View {
         }
     }
     
+    // The @ViewBuilder attribute allows you to construct complex views from multiple subviews
+    // in a declarative way. It makes the function capable of returning a dynamic number of views
+    // based on the conditional logic inside the function. In this case, it is used to construct
+    // the chat message bubble view.
+
     @ViewBuilder func chatMessageView(_ message: ChatMessage) -> some View {
+        // ChatBubble is a custom view that handles the layout and appearance of
+        // a chat message bubble. The 'direction' parameter determines whether the bubble
+        // aligns to the left or right based on the role of the message (e.g., model or user).
         ChatBubble(direction: message.role == .model ? .left : .right) {
+            // Inside the bubble, display the text of the message.
             Text(message.message)
-                .font(.system(size: 16))
-                .padding(.horizontal, 15)
-                .padding(.vertical, 10)
-                .foregroundColor(.white)
+                .font(.system(size: 16))         //
+                .padding(.horizontal, 15)        //
+                .padding(.vertical, 10)          //
+                .foregroundColor(.white)         //
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 5)
+        .padding(.horizontal, 10)                //
+        .padding(.vertical, 5)                   //
     }
+
     
     func handleCategoryButton(_ buttonTitle: String) {
         let prompt: String
