@@ -62,12 +62,10 @@ The purpose of this app is to simplify the process of discovering restaurants, s
     *   Developed the AI chat page with an interactive message display enabling specific conversations.
     *   Implemented initial frontend favouriting logic and UI for the store list and favourites view pages. 
     *   Implemented initial search filters on the storeListView.
-
-*   **Frontend Development:**
+    *   Refactored frontend filters in the store list view to use the ViewModel.
     *   Implemented HomePage and basic navigation routing.
     *   Implemented photo handling and display on UI.
-    *   Refactored frontend filters in the store list view to use the ViewModel.
-     
+   
 *   **Other:**
     *   Authored project documentation (README).
 
