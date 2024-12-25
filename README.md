@@ -28,15 +28,9 @@ The purpose of this app is to simplify the process of discovering restaurants, s
 - **General Questions:** Allows users to ask questions, making the feature flexible and engaging.
 
 ---
-![simulator_screenshot_B7F34647-06CC-4A96-AE90-C2EB8C8B0873](https://github.com/user-attachments/assets/df766ead-24fc-4bce-8e88-c6ec9a968e59)
+![1](https://github.com/user-attachments/assets/a2734d2a-1d92-4e2f-a529-c740c40c0ca9)
 
-![simulator_screenshot_664C74D8-9A46-47B5-BFA5-E51CFF83B231](https://github.com/user-attachments/assets/5251df6f-b173-4df6-a1a4-f3f26df19893)
-
-![simulator_screenshot_38FFB30B-32A6-44B2-AB46-807E1142540C](https://github.com/user-attachments/assets/7d47e0b0-c9b1-49d9-ae9b-510f79d767bc)
-
-![simulator_screenshot_87ED1B58-8FC5-43D7-B599-7899C0F39E57](https://![simulator_screenshot_633F46D5-6399-42E3-B9A3-89C0AC4D6B60](https://github.com/user-attachments/assets/ae3d8b3c-d12b-4e64-914d-758c6b56fcc8)
-
-github.com/user-attachments/assets/a52c13b6-fa91-4cec-856a-6c0b6dacb2c3)
+![2](https://github.com/user-attachments/assets/9fea0aad-f19a-49ae-b38b-6c350dcb5224)
 ---
 
 ## Technologies Used
